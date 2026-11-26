@@ -4,7 +4,7 @@ import type { Page } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 import { PNG_SIGNATURE, scanManifest } from './manifest';
 
-const realApp = 'http://127.0.0.1:4217/';
+const realApp = 'http://127.0.0.1:4217' + (process.env.VITE_BASE_PATH || '/');
 const headings = [
   ['inicio', 'Área de treino'],
   ['rotinas', 'Rotinas'],

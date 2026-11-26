@@ -26,7 +26,7 @@ export default defineConfig(({ mode }) => ({
       },
       workbox: {
         clientsClaim: true,
-        globPatterns: ['**/*.{js,css,html,woff2,woff,png,svg,webmanifest}'],
+        globPatterns: ['**/*.{js,css,html,woff2,woff,png,svg,webp,webmanifest}'],
         cleanupOutdatedCaches: true,
         navigateFallbackDenylist: [/\.[^/]+$/],
       },

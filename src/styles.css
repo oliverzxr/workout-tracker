@@ -1,5 +1,6 @@
-@layer tokens, reset, base, components, screens;
+@layer tokens, reset, base, components, screens, catalog;
 @import "./tokens.css";
+@import "./catalog/styles.css";
 
 @layer reset {
   *, *::before, *::after { box-sizing: border-box; }

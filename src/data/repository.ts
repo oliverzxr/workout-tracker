@@ -1,6 +1,6 @@
 import { openDB } from 'idb';
 import type { DBSchema, IDBPDatabase } from 'idb';
-import { initialSnapshot } from '../domain/catalog';
+import { initialSnapshot, withBundledExercises } from '../domain/catalog';
 import { snapshotSchema } from '../domain/model';
 import type { Snapshot } from '../domain/model';
 
@@ -36,8 +36,12 @@ export class IndexedTrackerRepository implements TrackerRepository {
     const tx = db.transaction('tracker', 'readwrite');
     const stored = await tx.store.get('snapshot');
     if (stored) {
+      const validated = snapshotSchema.parse(stored.data);
+      const data = withBundledExercises(validated);
+      const revision = stored.revision + (data === validated ? 0 : 1);
+      if (data !== validated) await tx.store.put({ data, revision }, 'snapshot');
       await tx.done;
-      return { revision: stored.revision, data: snapshotSchema.parse(stored.data) };
+      return { revision, data };
     }
     const first = { revision: 0, data: initialSnapshot() };
     await tx.store.put(first, 'snapshot');

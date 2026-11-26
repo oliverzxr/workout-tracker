@@ -1,7 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 
 const url = 'http://127.0.0.1:4218';
-const appUrl = 'http://127.0.0.1:4217';
+const appUrl = 'http://127.0.0.1:4217' + (process.env.VITE_BASE_PATH || '/');
 export default defineConfig({
   testDir: './tests/rc',
   use: { baseURL: url, trace: 'retain-on-failure', locale: 'pt-BR', timezoneId: 'America/Sao_Paulo' },
@@ -10,6 +10,7 @@ export default defineConfig({
   webServer: [
     {
       command: 'npm exec -- vite preview --mode demo --host 127.0.0.1 --port 4218 --strictPort',
+      env: { VITE_BASE_PATH: './' },
       url: url + '/demo.html', reuseExistingServer: !process.env.CI, timeout: 30000,
     },
     {

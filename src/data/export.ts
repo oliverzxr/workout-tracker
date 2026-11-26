@@ -1,4 +1,5 @@
 import { snapshotSchema } from '../domain/model';
+import { withBundledExercises } from '../domain/catalog';
 import type { Snapshot, Workout } from '../domain/model';
 
 export function exportBackup(data: Snapshot) {
@@ -10,7 +11,7 @@ export function importBackup(text: string): Snapshot {
   if (!object || typeof object !== 'object' || !('format' in object) || object.format !== 'workout-tracker-backup' || !('data' in object)) {
     throw new Error('Invalid backup');
   }
-  return snapshotSchema.parse(object.data);
+  return withBundledExercises(snapshotSchema.parse(object.data));
 }
 
 function quote(value: string | number) {

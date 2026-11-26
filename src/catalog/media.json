@@ -1,0 +1,478 @@
+{
+  "catalog:bench": {
+    "key": "bench",
+    "frames": [
+      {
+        "file": "Bench press 2.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Bench_press_2.svg",
+        "pageRevision": 820936201,
+        "sha1": "401e0c2e3db9d6e44de2ca6e3be93221aa059ab8"
+      },
+      {
+        "file": "Bench press 1.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Bench_press_1.svg",
+        "pageRevision": 820936199,
+        "sha1": "12ab2965c69d3f87673c7f2a9dd29402c3c1d613"
+      }
+    ]
+  },
+  "catalog:incline-db": {
+    "key": "incline-db",
+    "frames": [
+      {
+        "file": "Dumbbell incline bench press 2.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Dumbbell_incline_bench_press_2.svg",
+        "pageRevision": 1182975931,
+        "sha1": "ff236589c195f20e1255da34773e8ac8a26be2dc"
+      },
+      {
+        "file": "Dumbbell incline bench press 1.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Dumbbell_incline_bench_press_1.svg",
+        "pageRevision": 1113698244,
+        "sha1": "e1324b9efeed271203d2d99054cfc622d9150045"
+      }
+    ]
+  },
+  "catalog:pushup": {
+    "key": "pushup",
+    "frames": [
+      {
+        "file": "Push ups 1.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Push_ups_1.svg",
+        "pageRevision": 1287397503,
+        "sha1": "20fa2c2397d3f10b60ce87f71dd4c41d55ec21d3"
+      },
+      {
+        "file": "Push ups 2.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Push_ups_2.svg",
+        "pageRevision": 504954124,
+        "sha1": "15a2153c70b35841e5ad39ec6cc2d1e0b37dcf40"
+      }
+    ]
+  },
+  "catalog:pullup": {
+    "key": "pullup",
+    "frames": [
+      {
+        "file": "Pull ups 1.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Pull_ups_1.svg",
+        "pageRevision": 496344323,
+        "sha1": "76652454e07a2d99a3220cd992ce0d2f2ab77174"
+      },
+      {
+        "file": "Pull ups 2.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Pull_ups_2.svg",
+        "pageRevision": 1124480282,
+        "sha1": "594bfa6cbe2409c4bf9745896a96bc2d1adc98bb"
+      }
+    ]
+  },
+  "catalog:cable-row": {
+    "key": "cable-row",
+    "frames": [
+      {
+        "file": "Seated cable rows 2.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Seated_cable_rows_2.svg",
+        "pageRevision": 1146785225,
+        "sha1": "8794e4f8adf89b591fd0841416204574b71a6a13"
+      },
+      {
+        "file": "Seated cable rows 1.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Seated_cable_rows_1.svg",
+        "pageRevision": 680558422,
+        "sha1": "8043c3caf06693bb9e5551970e7e538721a5cb60"
+      }
+    ]
+  },
+  "catalog:lateral": {
+    "key": "lateral",
+    "frames": [
+      {
+        "file": "Lateral dumbbell raises 2.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Lateral_dumbbell_raises_2.svg",
+        "pageRevision": 469624955,
+        "sha1": "da5f10cd28fd15c3850ebf35dc631bd32e95ea2c"
+      },
+      {
+        "file": "Lateral dumbbell raises 1.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Lateral_dumbbell_raises_1.svg",
+        "pageRevision": 469624997,
+        "sha1": "b8e2e4cf81b0a3f06cb0c568b034e3bde8015889"
+      }
+    ]
+  },
+  "catalog:curl": {
+    "key": "curl",
+    "frames": [
+      {
+        "file": "Bicep curls with barbell 1.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Bicep_curls_with_barbell_1.svg",
+        "pageRevision": 823226150,
+        "sha1": "7c17d016ec0c1c20391638cd0fee7056ac55939a"
+      },
+      {
+        "file": "Bicep curls with barbell 2.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Bicep_curls_with_barbell_2.svg",
+        "pageRevision": 823226153,
+        "sha1": "201e1a444688baa1d1edce58bb2c8370bced7eff"
+      }
+    ]
+  },
+  "catalog:hammer": {
+    "key": "hammer",
+    "frames": [
+      {
+        "file": "Bicep hammer curl with dumbbell 1.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Bicep_hammer_curl_with_dumbbell_1.svg",
+        "pageRevision": 823226156,
+        "sha1": "01c078a4654a6558863764d1f9a2068e3563c088"
+      },
+      {
+        "file": "Bicep hammer curl with dumbbell 2.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Bicep_hammer_curl_with_dumbbell_2.svg",
+        "pageRevision": 823226160,
+        "sha1": "1be78ee3abebb69b87394e661c01e7096f578098"
+      }
+    ]
+  },
+  "catalog:close-bench": {
+    "key": "close-bench",
+    "frames": [
+      {
+        "file": "Close grip barbell bench press 1.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Close_grip_barbell_bench_press_1.svg",
+        "pageRevision": 862346555,
+        "sha1": "2988069c4b2ce195276bb23e4e46a00135ef8c05"
+      },
+      {
+        "file": "Close grip barbell bench press 2.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Close_grip_barbell_bench_press_2.svg",
+        "pageRevision": 862346561,
+        "sha1": "5c059626ccfbbd7a13c1f3888d17342070c4a630"
+      }
+    ]
+  },
+  "catalog:extension": {
+    "key": "extension",
+    "frames": [
+      {
+        "file": "Leg extensions 1.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Leg_extensions_1.svg",
+        "pageRevision": 461353783,
+        "sha1": "433dad3acdd1da9747a505049b406796afa421de"
+      },
+      {
+        "file": "Leg extensions 2.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Leg_extensions_2.svg",
+        "pageRevision": 461353739,
+        "sha1": "39e20a96330e15bb6c4d385a40d8ff54a4a871b8"
+      }
+    ]
+  },
+  "catalog:rdl": {
+    "key": "rdl",
+    "frames": [
+      {
+        "file": "Romanian dead lift 1.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Romanian_dead_lift_1.svg",
+        "pageRevision": 504463311,
+        "sha1": "fd824d6c8ef3cdaffe03a2bbb7e6d3a051dea7db"
+      },
+      {
+        "file": "Romanian dead lift 2.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Romanian_dead_lift_2.svg",
+        "pageRevision": 1055482475,
+        "sha1": "7ecd5d92764c987add6220b2064174d88a36eba0"
+      }
+    ]
+  },
+  "catalog:leg-curl": {
+    "key": "leg-curl",
+    "frames": [
+      {
+        "file": "Lying leg curl machine 1.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Lying_leg_curl_machine_1.svg",
+        "pageRevision": 476641553,
+        "sha1": "5b4a394be773bc81d92b8b8a4172ad8083dfef7f"
+      },
+      {
+        "file": "Lying leg curl machine 2.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Lying_leg_curl_machine_2.svg",
+        "pageRevision": 457616543,
+        "sha1": "b0ca4e63ae09917af9fd71cf16d37655f19334fc"
+      }
+    ]
+  },
+  "catalog:crunch": {
+    "key": "crunch",
+    "frames": [
+      {
+        "file": "Crunches 1.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Crunches_1.svg",
+        "pageRevision": 871580137,
+        "sha1": "0e0db746dc6febcc679fb0a929e2977be78ba656"
+      },
+      {
+        "file": "Crunches 2.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Crunches_2.svg",
+        "pageRevision": 871580139,
+        "sha1": "4b277b85571c1462ef7985bf5e2111be275fe18a"
+      }
+    ]
+  },
+  "catalog:db-bench": {
+    "key": "db-bench",
+    "frames": [
+      {
+        "file": "Bench press dumbbell 2.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Bench_press_dumbbell_2.svg",
+        "pageRevision": 820936208,
+        "sha1": "9c9451b9538b56210985f498e20788f1b090413d"
+      },
+      {
+        "file": "Bench press dumbbell 1.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Bench_press_dumbbell_1.svg",
+        "pageRevision": 820936205,
+        "sha1": "a142be3ea3465d65f30cd3830899fa0a37974aa5"
+      }
+    ]
+  },
+  "catalog:db-fly": {
+    "key": "db-fly",
+    "frames": [
+      {
+        "file": "Dumbbell flys 1.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Dumbbell_flys_1.svg",
+        "pageRevision": 1214853236,
+        "sha1": "f433193e42d99108384daf7fe357d35d5e8aa098"
+      },
+      {
+        "file": "Dumbbell flys 2.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Dumbbell_flys_2.svg",
+        "pageRevision": 1203062454,
+        "sha1": "59ef974c7a17226caeb5dae53376e37a6a69df2f"
+      }
+    ]
+  },
+  "catalog:decline-bench": {
+    "key": "decline-bench",
+    "frames": [
+      {
+        "file": "Decline barbell bench press 2.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Decline_barbell_bench_press_2.svg",
+        "pageRevision": 507154472,
+        "sha1": "a679cd50ff671f39dfe65d40a1b730ca54193556"
+      },
+      {
+        "file": "Decline barbell bench press 1.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Decline_barbell_bench_press_1.svg",
+        "pageRevision": 991112399,
+        "sha1": "8c1a9554f997fe009c7efc5b00496b761de804fa"
+      }
+    ]
+  },
+  "catalog:incline-bench": {
+    "key": "incline-bench",
+    "frames": [
+      {
+        "file": "Incline bench press 2.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Incline_bench_press_2.svg",
+        "pageRevision": 1173796897,
+        "sha1": "0d8c8cc55e8dc41f376b4292337d3a203adf429c"
+      },
+      {
+        "file": "Incline bench press 1.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Incline_bench_press_1.svg",
+        "pageRevision": 480781798,
+        "sha1": "5bc9b60804b571fe9bfca54d372491d90f9bea3c"
+      }
+    ]
+  },
+  "catalog:machine-fly": {
+    "key": "machine-fly",
+    "frames": [
+      {
+        "file": "Butterfly machine 1.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Butterfly_machine_1.svg",
+        "pageRevision": 840052220,
+        "sha1": "c650b5482cc605c82daf4c7ce40ba28f77ed3420"
+      },
+      {
+        "file": "Butterfly machine 2.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Butterfly_machine_2.svg",
+        "pageRevision": 840052224,
+        "sha1": "967bd8e265cbf6e69cee0576ae672ef8ee0a10cf"
+      }
+    ]
+  },
+  "catalog:chinup": {
+    "key": "chinup",
+    "frames": [
+      {
+        "file": "Chin ups 1.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Chin_ups_1.svg",
+        "pageRevision": 856325110,
+        "sha1": "fba876980c780bc4e1363987fbe8433984928df3"
+      },
+      {
+        "file": "Chin ups 2.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Chin_ups_2.svg",
+        "pageRevision": 856325113,
+        "sha1": "0e00946b65d800fcc99f1afa8ed688b845a28b58"
+      }
+    ]
+  },
+  "catalog:front-raise": {
+    "key": "front-raise",
+    "frames": [
+      {
+        "file": "Front dumbbell raise 1.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Front_dumbbell_raise_1.svg",
+        "pageRevision": 1262174935,
+        "sha1": "1f07473b0c5bc923817be6094e3f340c29244dad"
+      },
+      {
+        "file": "Front dumbbell raise 2.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Front_dumbbell_raise_2.svg",
+        "pageRevision": 1262174946,
+        "sha1": "74dbf540b4282050f0b3057a307d9f6567031010"
+      }
+    ]
+  },
+  "catalog:arnold": {
+    "key": "arnold",
+    "frames": [
+      {
+        "file": "Arnold press 1.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Arnold_press_1.svg",
+        "pageRevision": 801938702,
+        "sha1": "99fe73b63e9789862c9899b15363007002ef4fb2"
+      },
+      {
+        "file": "Arnold press 2.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Arnold_press_2.svg",
+        "pageRevision": 801938704,
+        "sha1": "fa9f29fa14f9dc381e0cd09372f287fa35192677"
+      }
+    ]
+  },
+  "catalog:db-curl": {
+    "key": "db-curl",
+    "frames": [
+      {
+        "file": "Alternating bicep curl with dumbbell 1.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Alternating_bicep_curl_with_dumbbell_1.svg",
+        "pageRevision": 789875389,
+        "sha1": "12f117d64e446ef2db82906033ab025cabb659bb"
+      },
+      {
+        "file": "Alternating bicep curl with dumbbell 2.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Alternating_bicep_curl_with_dumbbell_2.svg",
+        "pageRevision": 789875393,
+        "sha1": "eae25bd1a819e0003f0692d56c5a7aaedf2077bf"
+      }
+    ]
+  },
+  "catalog:concentration-curl": {
+    "key": "concentration-curl",
+    "frames": [
+      {
+        "file": "Concentration curls with dumbbell 1.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Concentration_curls_with_dumbbell_1.svg",
+        "pageRevision": 866916682,
+        "sha1": "63ca615034bc8c4c8dfe53229c6b0471e83522b4"
+      },
+      {
+        "file": "Concentration curls with dumbbell 2.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Concentration_curls_with_dumbbell_2.svg",
+        "pageRevision": 866916684,
+        "sha1": "275d147b73e14a36c1fec7b3ed64ba2793e00685"
+      }
+    ]
+  },
+  "catalog:bench-dip": {
+    "key": "bench-dip",
+    "frames": [
+      {
+        "file": "Bench dips 1.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Bench_dips_1.svg",
+        "pageRevision": 820925206,
+        "sha1": "299777396dccfe080c550998bb3e4e4205adc81c"
+      },
+      {
+        "file": "Bench dips 2.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Bench_dips_2.svg",
+        "pageRevision": 820925210,
+        "sha1": "7e29c6207ecfb6f0ae2d771675eab2ae4fccd737"
+      }
+    ]
+  },
+  "catalog:front-squat": {
+    "key": "front-squat",
+    "frames": [
+      {
+        "file": "Front squat with barbell 1.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Front_squat_with_barbell_1.svg",
+        "pageRevision": 1262212653,
+        "sha1": "f2b4489d13faf478ea896d0192f69680b43cf1f1"
+      },
+      {
+        "file": "Front squat with barbell 2.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Front_squat_with_barbell_2.svg",
+        "pageRevision": 1262212658,
+        "sha1": "88f0cf92b156cef3c7010afae205b8e25a653903"
+      }
+    ]
+  },
+  "catalog:good-morning": {
+    "key": "good-morning",
+    "frames": [
+      {
+        "file": "Barbell good mornings 1.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Barbell_good_mornings_1.svg",
+        "pageRevision": 816866236,
+        "sha1": "9e7554dfcf79225a6ee39dc705193c84181b5994"
+      },
+      {
+        "file": "Barbell good mornings 2.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Barbell_good_mornings_2.svg",
+        "pageRevision": 816866242,
+        "sha1": "bcec81e68e3608a707270b2a05456389c79c53a0"
+      }
+    ]
+  },
+  "catalog:deadlift": {
+    "key": "deadlift",
+    "frames": [
+      {
+        "file": "Barbell dead lifts 2.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Barbell_dead_lifts_2.svg",
+        "pageRevision": 816866229,
+        "sha1": "e144434d74e6fd5437c3f0f7326e95eea3e19c3a"
+      },
+      {
+        "file": "Barbell dead lifts 1.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Barbell_dead_lifts_1.svg",
+        "pageRevision": 816866227,
+        "sha1": "8d0523c7e1a1b91770a83027f7b0c16d61acd172"
+      }
+    ]
+  },
+  "catalog:leg-press-calf": {
+    "key": "leg-press-calf",
+    "frames": [
+      {
+        "file": "Calves press on leg machine 1.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Calves_press_on_leg_machine_1.svg",
+        "pageRevision": 846285990,
+        "sha1": "b01ff90bf6680901e47908e44197e1f5b0cf2fc3"
+      },
+      {
+        "file": "Calves press on leg machine 2.svg",
+        "source": "https://commons.wikimedia.org/wiki/File:Calves_press_on_leg_machine_2.svg",
+        "pageRevision": 846285993,
+        "sha1": "e935d5fd1bf9ae7fa889064f1d5f95bd3ec409af"
+      }
+    ]
+  }
+}

@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { Activity, ArrowLeft, Dumbbell, History as HistoryIcon, House, Layers3, Settings as Gear, WifiOff } from 'lucide-react';
 import { brand, formatInputLoad, t } from './pt-BR';
 import { usePwa } from './usePwa';
 import { useTracker } from './useTracker';
+import { defaultCatalogFilters } from '../catalog/profiles';
 import { download, exportBackup } from '../data/export';
 import type { TrackerRepository } from '../data/repository';
 import { editWorkout, finishDraft, newDraft, workoutExercise } from '../domain/model';
@@ -14,6 +15,9 @@ import { Progress } from '../ui/Progress';
 import { Routines } from '../ui/Routines';
 import { Settings } from '../ui/Settings';
 import { WorkoutEditor } from '../ui/WorkoutEditor';
+import { Empty } from '../ui/primitives';
+
+const ExerciseDetail = lazy(() => import('../ui/ExerciseDetail').then(module => ({ default: module.ExerciseDetail })));
 
 const tabs = [
   ['inicio', t.nav.home, House],
@@ -23,17 +27,19 @@ const tabs = [
   ['ajustes', t.nav.settings, Gear],
 ] as const;
 
-type Page = typeof tabs[number][0] | 'exercicios' | 'treino' | 'detalhes' | 'editar';
+type Page = typeof tabs[number][0] | 'exercicios' | 'exercicio' | 'treino' | 'detalhes' | 'editar';
 type Route = { page: Page; id: string };
-const pages: Page[] = [...tabs.map(([page]) => page), 'exercicios', 'treino', 'detalhes', 'editar'];
+const pages: Page[] = [...tabs.map(([page]) => page), 'exercicios', 'exercicio', 'treino', 'detalhes', 'editar'];
 
 function readRoute(): Route {
-  const [page, id] = window.location.hash.replace(/^#\/?/, '').split('/');
-  return { page: pages.includes(page as Page) ? page as Page : 'inicio', id: id ?? '' };
+  const [page, segment = ''] = window.location.hash.replace(/^#\/?/, '').split('/');
+  if (!pages.includes(page as Page)) return { page: 'inicio', id: '' };
+  try { return { page: page as Page, id: decodeURIComponent(segment) }; }
+  catch { return { page: page as Page, id: '' }; }
 }
 
 function routeHash(route: Route) {
-  return '#/' + route.page + (route.id ? '/' + route.id : '');
+  return '#/' + route.page + (route.id ? '/' + encodeURIComponent(route.id) : '');
 }
 
 function upsert<T extends { id: string }>(values: T[], value: T) {
@@ -57,6 +63,7 @@ export function App({ repository, demo = false }: { repository: TrackerRepositor
   const online = useConnectivity();
   const [route, setRoute] = useState(readRoute);
   const [newRoutine, setNewRoutine] = useState(false);
+  const [catalogFilters, setCatalogFilters] = useState(defaultCatalogFilters);
   const [notice, setNotice] = useState('');
   const [editorError, setEditorError] = useState('');
   const [editing, setEditing] = useState<Draft | null>(null);
@@ -133,7 +140,7 @@ export function App({ repository, demo = false }: { repository: TrackerRepositor
   const editingHistory = route.page === 'editar';
   const sessionOpen = Boolean(editor && (route.page === 'treino' || editingHistory));
   const alert = status === 'error' || status === 'conflict';
-  const mainTab = route.page === 'exercicios' ? 'rotinas' : route.page === 'detalhes' || route.page === 'editar' ? 'historico' : route.page === 'treino' ? 'inicio' : route.page;
+  const mainTab = route.page === 'exercicios' || route.page === 'exercicio' ? 'rotinas' : route.page === 'detalhes' || route.page === 'editar' ? 'historico' : route.page === 'treino' ? 'inicio' : route.page;
 
   async function finish() {
     if (!editor || status === 'conflict') return;
@@ -156,7 +163,14 @@ export function App({ repository, demo = false }: { repository: TrackerRepositor
       setOpenNew={setNewRoutine} save={saveRoutine} remove={routine => { void update(current => ({ ...current, routines: current.routines.filter(item => item.id !== routine.id) })); }}
       start={start} catalog={() => navigate('exercicios')} />;
     else if (route.page === 'exercicios') page = <><div className="editor-top"><button className="text-button" onClick={() => navigate('rotinas')}><ArrowLeft size={17} />{t.nav.routines}</button></div>
-      <Catalog exercises={data.exercises} save={saveExercise} /></>;
+      <Catalog exercises={data.exercises} save={saveExercise} details={item => navigate('exercicio', item.id)} filters={catalogFilters} changeFilters={setCatalogFilters} /></>;
+    else if (route.page === 'exercicio') {
+      const exercise = data.exercises.find(item => item.id === route.id);
+      const close = () => navigate('exercicios');
+      page = exercise ? <Suspense fallback={<p role="status" className="muted">{t.storage.loading}</p>}>
+        <ExerciseDetail key={exercise.id} exercise={exercise} workouts={data.workouts} close={close} showWorkout={showWorkout} />
+      </Suspense> : <Empty title={t.catalog.missing} action={<button className="button secondary" onClick={close}>{t.catalog.heading}</button>} />;
+    }
     else if (route.page === 'progresso') page = <Progress workouts={data.workouts} exercises={data.exercises} />;
     else if (route.page === 'ajustes') page = <Settings data={data} save={(value: Snapshot) => update(() => value)}
       install={pwa.install} installed={pwa.installed} offline={pwa.offline} demo={demo} />;
