@@ -1,7 +1,7 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
 
-const { contarSeries, calcularVolume } = require("../src/treino");
+const { contarSeries, calcularVolume } = require("../src/treino.cjs");
 
 const treino = {
     nome: "Push A",

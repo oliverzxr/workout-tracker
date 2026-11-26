@@ -107,12 +107,12 @@ export function finishDraft(value: Draft, finishedAt = new Date().toISOString())
   return result.success ? result.data : null;
 }
 
-export function editWorkout(value: Workout): Draft {
+export function editWorkout(value: Workout, inputLoad = (grams: number) => String(grams / 1000)): Draft {
   return {
     ...value, timer: null,
     exercises: value.exercises.map(item => ({
       ...item, sets: item.sets.map(set => ({
-        id: set.id, kind: set.kind, load: String(set.grams / 1000).replace('.', ','),
+        id: set.id, kind: set.kind, load: inputLoad(set.grams),
         reps: String(set.reps), rir: set.rir === null ? '' : String(set.rir), completed: true,
       })),
     })),
