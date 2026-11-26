@@ -52,6 +52,8 @@ As capturas foram geradas pela suíte de interface a partir de treinos registrad
 
 ## Documentação
 
+- [Revisão visual e galeria das três propostas](docs/revisao-visual/README.md)
+
 - [Arquitetura, armazenamento e métricas](docs/arquitetura.md)
 - [Viabilidade de importar histórico do Hevy](docs/importacao-hevy.md)
 - [Licenças de terceiros distribuídos com o app](public/THIRD-PARTY-NOTICES.txt)

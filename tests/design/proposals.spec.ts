@@ -38,6 +38,10 @@ for (const direction of Object.keys(directions)) {
       await expect(page.locator(selector).first()).toBeVisible();
       await fits(page);
       await capture(page, info, direction, slug);
+      if (process.env.CAPTURE_DESIGN && info.project.name === 'mobile' && slug === 'progresso') {
+        await page.locator('.progress-chart').evaluate(element => element.scrollIntoView({ block: 'start' }));
+        await capture(page, info, direction, 'progresso-detalhe');
+      }
     }
 
     await page.goto(url + '&state=active#/treino');
