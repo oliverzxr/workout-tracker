@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Activity, ChevronLeft, ChevronRight, Trophy } from 'lucide-react';
-import { formatNumber, locale, shortDate, t } from '../app/pt-BR';
+import { formatNumber, locale, longDate, shortDate, t } from '../app/pt-BR';
 import type { Exercise, Workout } from '../domain/model';
 import { muscleTotals, progression, totals, validSets, weekStart, weekWorkouts } from '../domain/stats';
 import { Empty, Title } from './primitives';
@@ -35,14 +35,14 @@ function Chart({ points, metric }: { points: ReturnType<typeof progression>; met
       })}
       <polyline points={coords.map(point => point.x + ',' + point.y).join(' ')} />
       {coords.map((point, index) => <circle key={points[index]?.id} cx={point.x} cy={point.y} r={4}>
-        <title>{shortDate(points[index]!.date)} · {formatNumber(points[index]![metric])} kg</title>
+        <title>{longDate(points[index]!.date)} · {formatNumber(points[index]![metric])} kg</title>
       </circle>)}
       <text x={points.length === 1 ? coords[0]!.x : left} y={185} textAnchor={points.length === 1 ? 'middle' : 'start'}>{shortDate(points[0]!.date)}</text>
       {points.length > 1 && <text x={right} y={185} textAnchor="end">{shortDate(points.at(-1)!.date)}</text>}
     </svg>
     <details className="chart-data"><summary>{t.progress.table}</summary><table>
       <thead><tr><th scope="col">{t.progress.date}</th><th scope="col">{t.progress[metric]}</th></tr></thead>
-      <tbody>{[...points].reverse().map(point => <tr key={point.id}><th scope="row">{shortDate(point.date)}</th><td>{formatNumber(point[metric])} kg</td></tr>)}</tbody>
+      <tbody>{[...points].reverse().map(point => <tr key={point.id}><th scope="row">{longDate(point.date)}</th><td>{formatNumber(point[metric])} kg</td></tr>)}</tbody>
     </table></details>
   </>;
 }
