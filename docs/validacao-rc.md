@@ -1,4 +1,4 @@
-# Validação da candidata 1.0.0-rc.1
+# Validação da candidata 1.0.0-rc.2
 
 ## Reproduzir
 
@@ -13,14 +13,21 @@ npm run build:demo
 npm run test:rc
 ```
 
-Em Linux, `npx playwright install --with-deps chromium webkit` instala também as dependências do sistema.
+Em Linux, `npx playwright install --with-deps chromium webkit` instala também as dependências do sistema. Para reproduzir a verificação do Pages, execute `npm run build` e `npm run test:rc` com `VITE_BASE_PATH=/workout-tracker/` definido no ambiente. Remova a variável e repita o build para servir na raiz. Use `CAPTURE_RC=1` ao executar a suíte de candidata para atualizar as capturas versionadas.
 
 ## Cobertura
 
-- Testes de domínio, armazenamento e exportação continuam cobrindo validação, cálculos, backups e conflitos entre abas.
-- Testes de interface cobrem rotinas, reordenação, carga decimal, aquecimento, retomada, edição do treino, métricas e importação de backup.
-- A suíte da candidata audita os pontos de entrada com axe-core em Chromium e WebKit. Verifica navegação, telas preenchidas e vazias, catálogo durante treino, dimensões de toque e conteúdo sem rolagem horizontal em larguras de 320, 393, 768 e 1280 pixels CSS.
-- O build real fornece manifesto, ícones e service worker. Chromium verifica os critérios de instalação pelo DevTools Protocol. O fluxo em rede desativada recarrega uma sessão persistida, conclui um treino com carga decimal, confere as linhas do CSV e restaura o JSON em outro perfil.
-- A demonstração injeta um repositório em memória. A verificação de interface falha se ela tentar usar IndexedDB. As alterações são descartadas ao recarregar.
+| Verificação | Resultado local |
+| --- | --- |
+| ESLint, TypeScript estrito, build de produção e build de demonstração | Aprovados. |
+| Domínio e integração | 27 testes incluindo preservação dos 34 IDs originais, coexistência com exercícios pessoais e arquivados, gravação concorrente e restauração de backups anteriores. |
+| Fluxos de interface | 8 execuções em Chromium e WebKit, cobrindo rotina, reordenação, cargas decimais, aquecimento, retomada, edição do treino, arquivo e restauração de backups. |
+| Suíte da candidata | 8 execuções em Chromium e WebKit também aprovadas no subcaminho do portfólio. O catálogo valida busca por alias, músculos secundários, equipamentos, créditos, imagens, histórico e alternância de métrica por exercício. |
+| Acessibilidade e layout | Axe com regras WCAG 2.0, 2.1 e 2.2 A/AA nas superfícies exercitadas. Testes de foco, Escape, alvos de toque e largura a 320, 393, 768 e 1280 px CSS. |
+| PWA e armazenamento | Manifesto, ícones comuns, maskable e iOS servidos. Chromium aprovou os critérios de instalação via DevTools. Em rede desligada, o app recarregou o treino e os quadros, persistiu no IndexedDB, finalizou a sessão, exportou CSV e gerou JSON restaurado em outro perfil. |
+| Imagens | 28 pares WebP mais 28 miniaturas, 644.136 bytes no total. A suíte valida os arquivos e os metadados. O seletor do treino não carrega imagens do catálogo. |
+| Dependências | `npm audit` em produção e desenvolvimento sem vulnerabilidades reportadas na execução de 26/11/2026. |
 
-A avaliação de Safari foi executada em WebKit com perfil de iPhone. A instalação pela Tela de Início e o retorno após bloquear a tela em um iPhone físico ainda precisam de uma verificação em HTTPS. Os testes automatizados de acessibilidade cobrem as regras selecionadas e os fluxos exercitados.
+A demo injeta um repositório em memória. Uma verificação falha se ela tentar usar IndexedDB. As alterações de demonstração são descartadas ao recarregar. As capturas usam exclusivamente dados de exemplo.
+
+O build verificou o perfil de iPhone em WebKit. A instalação pela Tela de Início e o retorno após bloquear a tela em iPhone físico ainda exigem teste por HTTPS no endereço definitivo. Axe cobre as regras e os fluxos executados. A validação de instalação real e de leitor de tela em aparelho continua separada.
