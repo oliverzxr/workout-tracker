@@ -1,6 +1,6 @@
 import { useEffect, useId, useRef } from 'react';
 import type { ReactNode } from 'react';
-import { ChevronDown, ChevronUp, Dumbbell, X } from 'lucide-react';
+import { ChevronDown, ChevronUp, X } from 'lucide-react';
 import { t } from '../app/pt-BR';
 
 export function Title({ heading, subtitle, action }: { heading: string; subtitle?: string; action?: ReactNode }) {
@@ -8,7 +8,7 @@ export function Title({ heading, subtitle, action }: { heading: string; subtitle
 }
 
 export function Empty({ title, detail, action }: { title: string; detail?: string; action?: ReactNode }) {
-  return <div className="empty"><span className="empty-icon"><Dumbbell size={20} /></span><div><strong>{title}</strong>{detail && <p>{detail}</p>}</div>{action}</div>;
+  return <div className="empty"><div><strong>{title}</strong>{detail && <p>{detail}</p>}</div>{action}</div>;
 }
 
 export function Dialog({ title, children, close }: { title: string; children: ReactNode; close: () => void }) {

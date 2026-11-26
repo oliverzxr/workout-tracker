@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Activity, ArrowLeft, Dumbbell, HardDrive, History as HistoryIcon, House, Layers3, Settings as Gear, WifiOff } from 'lucide-react';
+import { Activity, ArrowLeft, Dumbbell, History as HistoryIcon, House, Layers3, Settings as Gear, WifiOff } from 'lucide-react';
 import { brand, formatInputLoad, t } from './pt-BR';
 import { usePwa } from './usePwa';
 import { useTracker } from './useTracker';
@@ -51,7 +51,7 @@ function useConnectivity() {
   return online;
 }
 
-export function App({ repository }: { repository: TrackerRepository }) {
+export function App({ repository, demo = false }: { repository: TrackerRepository; demo?: boolean }) {
   const { data, update, status, reload, retry } = useTracker(repository);
   const pwa = usePwa();
   const online = useConnectivity();
@@ -131,6 +131,7 @@ export function App({ repository }: { repository: TrackerRepository }) {
   const selected = data?.workouts.find(item => item.id === route.id);
   const editor = route.page === 'editar' && selected ? editing ?? editWorkout(selected, formatInputLoad) : data?.draft;
   const editingHistory = route.page === 'editar';
+  const sessionOpen = Boolean(editor && (route.page === 'treino' || editingHistory));
   const alert = status === 'error' || status === 'conflict';
   const mainTab = route.page === 'exercicios' ? 'rotinas' : route.page === 'detalhes' || route.page === 'editar' ? 'historico' : route.page === 'treino' ? 'inicio' : route.page;
 
@@ -158,7 +159,7 @@ export function App({ repository }: { repository: TrackerRepository }) {
       <Catalog exercises={data.exercises} save={saveExercise} /></>;
     else if (route.page === 'progresso') page = <Progress workouts={data.workouts} exercises={data.exercises} />;
     else if (route.page === 'ajustes') page = <Settings data={data} save={(value: Snapshot) => update(() => value)}
-      install={pwa.install} installed={pwa.installed} offline={pwa.offline} />;
+      install={pwa.install} installed={pwa.installed} offline={pwa.offline} demo={demo} />;
     else if (route.page === 'detalhes' && selected) page = <WorkoutDetail value={selected} back={() => navigate('historico')}
       edit={() => navigate('editar', selected.id)} remove={async () => {
         if (await update(current => ({ ...current, workouts: current.workouts.filter(item => item.id !== selected.id) }))) navigate('historico');
@@ -174,26 +175,33 @@ export function App({ repository }: { repository: TrackerRepository }) {
       exercises={data.exercises} workouts={data.workouts} close={() => editingHistory && selected ? showWorkout(selected) : navigate('inicio')}
       finish={() => { void finish(); }} discard={editingHistory ? undefined : async () => {
         if (window.confirm(t.active.confirmDiscard) && await update(current => ({ ...current, draft: null }))) navigate('inicio');
-      }} saveStatus={editingHistory || alert || status === 'loading' ? '' : t.storage[status]} error={editorError} />;
+      }} saveStatus={demo ? t.shell.demo : editingHistory || alert || status === 'loading' ? '' : t.storage[status]} error={editorError} />;
     else if (mainTab === 'historico') page = <History workouts={data.workouts} detail={showWorkout} />;
     else page = <Home data={data} start={start} resume={() => navigate('treino')} routines={() => navigate('rotinas')}
       create={showNewRoutine} history={() => navigate('historico')} detail={showWorkout} />;
   }
 
-  return <div className="app-shell">
+  return <div className="app-shell" data-session={sessionOpen ? 'open' : undefined}>
     <a href="#conteudo" className="skip-link" onClick={event => { event.preventDefault(); content.current?.focus(); }}>{t.shell.skip}</a>
-    <aside className="rail">
-      <button className="brand" onClick={() => navigate('inicio')}><span className="brand-mark"><Dumbbell size={22} strokeWidth={1.8} /></span>
-        <span>{brand.name}</span></button>
-      <nav aria-label={t.shell.navigation}>{tabs.map(([id, label, Icon]) => <button key={id} type="button" aria-current={mainTab === id ? 'page' : undefined} onClick={() => navigate(id)}>
-        <Icon size={20} strokeWidth={1.75} /><span>{label}</span>
-      </button>)}</nav>
-      <button className="local-badge" title={t.shell.localHelp} onClick={() => navigate('ajustes')}><HardDrive size={16} />{t.shell.local}</button>
-    </aside>
-    <header className="mobile-brand"><button className="brand" onClick={() => navigate('inicio')}><span className="brand-mark"><Dumbbell size={19} /></span><span>{brand.name}</span></button>
-      <button className="icon-button" aria-label={t.shell.localHelp} onClick={() => navigate('ajustes')}>{online ? <HardDrive size={19} /> : <WifiOff size={19} />}</button>
+    <header className="app-header">
+      <div className="app-header-inner">
+        <button type="button" className="brand" onClick={() => navigate('inicio')}>
+          <span className="brand-mark"><Dumbbell size={20} strokeWidth={1.8} aria-hidden="true" /></span><span>{brand.name}</span>
+        </button>
+        <nav aria-label={t.shell.navigation} className="app-navigation">
+          <div className="nav-tabs">
+            {tabs.slice(0, -1).map(([id, label, Icon]) => <button key={id} type="button" aria-current={mainTab === id ? 'page' : undefined} onClick={() => navigate(id)}>
+              <Icon size={21} strokeWidth={1.7} aria-hidden="true" /><span>{label}</span>
+            </button>)}
+          </div>
+          <button type="button" className="icon-button nav-settings" aria-label={t.nav.settings} aria-current={mainTab === 'ajustes' ? 'page' : undefined} title={t.nav.settings} onClick={() => navigate('ajustes')}>
+            <Gear size={21} strokeWidth={1.7} aria-hidden="true" />
+          </button>
+        </nav>
+      </div>
     </header>
     <main ref={content} id="conteudo" tabIndex={-1} className="main-content">
+      {demo && !sessionOpen && <div className="demo-note">{t.shell.demo} <span>{t.shell.demoNote}</span></div>}
       {!online && <div className="banner muted"><WifiOff size={16} />{t.shell.offline}</div>}
       {pwa.update && <div className="banner"><span>{t.settings.updateNotice}</span><button className="button secondary" disabled={status !== 'saved' || editDirty.current} onClick={pwa.applyUpdate}>{t.settings.update}</button></div>}
       {alert && <div className="banner error" role="alert">

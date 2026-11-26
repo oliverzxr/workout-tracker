@@ -5,6 +5,7 @@ export const t = {
   shell: {
     skip: 'Ir para o conteúdo', navigation: 'Navegação principal', local: 'Dados neste dispositivo',
     offline: 'Sem conexão', localHelp: 'Sobre seus dados locais',
+    demo: 'Demonstração', demoNote: 'Dados de exemplo. Alterações duram até recarregar a página.',
   },
   nav: { home: 'Início', routines: 'Rotinas', history: 'Histórico', progress: 'Progresso', settings: 'Ajustes' },
   muscles: {
@@ -30,6 +31,10 @@ export const t = {
     noRoutines: 'Crie uma rotina para começar com seus exercícios e séries planejados.',
     createRoutine: 'Criar rotina', recent: 'Último treino', seeHistory: 'Ver histórico',
     noRecent: 'Seu primeiro treino aparecerá aqui.', startRoutine: 'Iniciar rotina',
+    openRoutine: 'Escolher rotina', draftHint: 'Continue da última série registrada.',
+    preferred: 'Escolha a carga e registre suas séries conforme treina.',
+    trainingDay: 'Treino registrado', restDay: 'Sem treino registrado',
+    weekEmpty: 'Os dias de treino serão marcados aqui após a primeira sessão.',
   },
   catalog: {
     heading: 'Catálogo de exercícios', subtitle: 'Gerencie seus exercícios e o descanso padrão de cada um.',
@@ -42,6 +47,7 @@ export const t = {
     empty: 'Você ainda não criou rotinas.', create: 'Nova rotina', edit: 'Editar rotina', start: 'Começar',
     catalog: 'Gerenciar exercícios', remove: 'Excluir rotina', confirm: 'Excluir esta rotina?',
     name: 'Nome da rotina', sets: 'Séries planejadas', invalid: 'Informe um nome e adicione pelo menos um exercício com 1 a 20 séries.',
+    preview: 'Ver exercícios',
   },
   active: {
     heading: 'Treino em andamento', editHeading: 'Editar treino', name: 'Nome do treino', finish: 'Finalizar treino',
@@ -54,15 +60,17 @@ export const t = {
     options: 'Opções', removeSet: 'Remover série', removeExercise: 'Remover exercício',
     reorderUp: 'Mover para cima', reorderDown: 'Mover para baixo', rest: 'Descanso',
     restNow: 'Iniciar descanso', noRest: 'Desativado', timerComplete: 'Descanso concluído',
-    stop: 'Encerrar descanso', addTime: 'Adicionar 15 segundos',
+    stop: 'Encerrar descanso', addTime: '+15 s de descanso',
     rirHelp: 'RIR é o número de repetições que ainda conseguiria fazer.',
     editPending: 'Conclua as séries adicionadas ou remova as linhas pendentes antes de salvar.',
     confirmUnfinished: 'As séries preenchidas, mas ainda não concluídas, ficarão fora do histórico. Finalizar treino?',
     cancelEdit: 'Sair sem salvar as alterações deste treino?',
+    jump: 'Ir para exercício', completedSets: 'Séries concluídas',
   },
   history: {
     heading: 'Histórico', description: 'Consulte os detalhes e edite treinos finalizados.', details: 'Ver treino',
     remove: 'Excluir treino', confirm: 'Excluir este treino do histórico?',
+    emptyDetail: 'Os treinos finalizados aparecem aqui com as séries, cargas e repetições.',
   },
   progress: {
     heading: 'Progresso', description: 'Acompanhe a frequência, a carga e as séries válidas.',

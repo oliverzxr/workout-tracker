@@ -1,22 +1,38 @@
-import { ArrowLeft, ArrowRight, CalendarDays, Pencil, Trash2 } from 'lucide-react';
-import { formatNumber, longDate, t } from '../app/pt-BR';
+import { ArrowLeft, ChevronRight, Pencil, Trash2 } from 'lucide-react';
+import { formatNumber, locale, longDate, t } from '../app/pt-BR';
 import type { Workout } from '../domain/model';
 import { totals } from '../domain/stats';
 import { Empty, Title } from './primitives';
 
 export function History({ workouts, detail }: { workouts: Workout[]; detail: (value: Workout) => void }) {
+  const months = new Map<string, Workout[]>();
+  for (const workout of [...workouts].sort((a, b) => b.startedAt.localeCompare(a.startedAt))) {
+    const month = monthDisplay.format(new Date(workout.startedAt));
+    const entries = months.get(month);
+    if (entries) entries.push(workout);
+    else months.set(month, [workout]);
+  }
   return <>
     <Title heading={t.history.heading} subtitle={t.history.description} />
-    {workouts.length ? <div className="list">{[...workouts].sort((a, b) => b.startedAt.localeCompare(a.startedAt)).map(workout =>
-      <button className="list-row clickable history-row" key={workout.id} onClick={() => detail(workout)}>
-        <span className="row-icon"><CalendarDays size={19} /></span>
-        <span className="row-content"><strong>{workout.name}</strong><small>{longDate(workout.startedAt)}</small></span>
-        <span className="muted history-count">{totals([workout]).sets} {t.common.validSets.toLowerCase()}</span>
-        <ArrowRight size={18} />
-      </button>,
-    )}</div> : <Empty title={t.common.noHistory} />}
+    {months.size ? [...months].map(([month, entries]) => <section className="history-group" key={month}>
+      <h2>{month.charAt(0).toLocaleUpperCase(locale) + month.slice(1)}</h2>
+      <div className="list">{entries.map(workout => {
+        const start = new Date(workout.startedAt);
+        const duration = Math.round((Date.parse(workout.finishedAt) - +start) / 60_000);
+        return <button className="list-row clickable history-row" key={workout.id} onClick={() => detail(workout)}>
+          <span className="history-date">{String(start.getDate()).padStart(2, '0')}<small>{weekday.format(start).replace('.', '')}</small></span>
+          <span className="row-content"><strong>{workout.name}</strong><small>{timeOfDay.format(start)} · {duration} min</small></span>
+          <span className="history-count">{totals([workout]).sets}<small>{t.common.validSets.toLowerCase()}</small></span>
+          <ChevronRight size={17} aria-hidden="true" />
+        </button>;
+      })}</div>
+    </section>) : <Empty title={t.common.noHistory} detail={t.history.emptyDetail} />}
   </>;
 }
+
+const monthDisplay = new Intl.DateTimeFormat(locale, { month: 'long', year: 'numeric' });
+const weekday = new Intl.DateTimeFormat(locale, { weekday: 'short' });
+const timeOfDay = new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit' });
 
 export function WorkoutDetail({ value, back, edit, remove }: { value: Workout; back: () => void; edit: () => void; remove: () => void }) {
   const stats = totals([value]);

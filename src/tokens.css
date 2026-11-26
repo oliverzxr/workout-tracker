@@ -1,0 +1,40 @@
+@layer tokens {
+  :root {
+    color-scheme: dark;
+    --bg: #000000;
+    --panel: #101112;
+    --well: #080909;
+    --field: #171819;
+    --hover: #1b1d1e;
+    --line: #252829;
+    --border: #3d4242;
+    --text: #f3f5f5;
+    --muted: #a6adad;
+    --quiet: #929a9a;
+    --accent: #76e3cb;
+    --accent-pressed: #9ef0df;
+    --accent-surface: #112421;
+    --accent-line: #30645a;
+    --on-accent: #051c17;
+    --warning: #efd29c;
+    --warning-surface: #2b2419;
+    --danger: #ffb3b7;
+    --danger-surface: #2b1b1e;
+    --font: "Inter", system-ui, sans-serif;
+    --measure: 1096px;
+    --measure-editor: 790px;
+    --radius-small: 7px;
+    --radius: 11px;
+    --radius-large: 16px;
+    --tap: 44px;
+    --nav-height: 64px;
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+    --safe-top: env(safe-area-inset-top, 0px);
+    --space-1: .25rem;
+    --space-2: .5rem;
+    --space-3: .75rem;
+    --space-4: 1rem;
+    --space-5: 1.5rem;
+    --space-6: 2rem;
+  }
+}

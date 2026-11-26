@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Dumbbell, Layers3, Pencil, Play, Plus, Trash2 } from 'lucide-react';
-import { t } from '../app/pt-BR';
+import { Dumbbell, Pencil, Play, Plus, Trash2 } from 'lucide-react';
+import { countLabel, t } from '../app/pt-BR';
 import { move, newId } from '../domain/model';
 import type { Exercise, Routine } from '../domain/model';
 import { ExercisePicker } from './Catalog';
@@ -52,15 +52,26 @@ export function Routines({ routines, exercises, openNew, setOpenNew, save, remov
 }) {
   const [editing, setEditing] = useState<Routine | null>(null);
   return <>
-    <Title heading={t.routines.heading} subtitle={t.routines.description} action={<button className="button primary" onClick={() => setOpenNew(true)}><Plus size={17} />{t.routines.create}</button>} />
-    <div className="section-head"><button className="button secondary" onClick={catalog}><Dumbbell size={17} />{t.routines.catalog}</button></div>
-    {routines.length ? <div className="list">{routines.map(routine => <article className="routine-list" key={routine.id}>
-      <div className="list-row"><span className="row-icon"><Layers3 size={19} /></span><div className="row-content">
-        <strong>{routine.name}</strong><small>{routine.items.map(item => exercises.find(exercise => exercise.id === item.exerciseId)?.name).filter(Boolean).join(' · ')}</small>
-      </div><button className="icon-button" aria-label={t.common.edit + ' ' + routine.name} onClick={() => setEditing(routine)}><Pencil size={17} /></button>
-        <button className="icon-button" aria-label={t.routines.remove + ' ' + routine.name} onClick={() => { if (window.confirm(t.routines.confirm)) remove(routine); }}><Trash2 size={17} /></button>
+    <Title heading={t.routines.heading} action={<button className="button primary" onClick={() => setOpenNew(true)}><Plus size={17} aria-hidden="true" />{t.routines.create}</button>} />
+    <div className="section-head routine-toolbar">
+      <button className="button secondary" onClick={catalog}><Dumbbell size={17} aria-hidden="true" />{t.routines.catalog}</button>
+      {routines.length > 0 && <span className="muted">{countLabel(routines.length, 'Rotina', t.routines.heading)}</span>}
+    </div>
+    {routines.length ? <div className="list routine-plans">{routines.map(routine => <article className="routine-list" key={routine.id}>
+      <header className="routine-head">
+        <div className="row-content"><h2>{routine.name}</h2>
+          <small>{countLabel(routine.items.length, t.common.exercise, t.common.exercises)} · {countLabel(routine.items.reduce((total, item) => total + item.sets, 0), t.active.series, t.common.sets)}</small>
+        </div>
+        <button className="icon-button" aria-label={t.common.edit + ' ' + routine.name} onClick={() => setEditing(routine)}><Pencil size={17} aria-hidden="true" /></button>
+        <button className="icon-button" aria-label={t.routines.remove + ' ' + routine.name} onClick={() => { if (window.confirm(t.routines.confirm)) remove(routine); }}><Trash2 size={17} aria-hidden="true" /></button>
+      </header>
+      <div className="routine-foot">
+        <details className="routine-preview"><summary>{t.routines.preview}</summary>
+          <ol>{routine.items.map(item => <li key={item.id}><span>{exercises.find(exercise => exercise.id === item.exerciseId)?.name ?? t.common.exercise}</span>
+            <small> {countLabel(item.sets, t.active.series, t.common.sets)}</small></li>)}</ol>
+        </details>
+        <button className="button secondary" onClick={() => start(routine)}><Play size={15} aria-hidden="true" />{t.routines.start}</button>
       </div>
-      <button className="button secondary" onClick={() => start(routine)}><Play size={15} />{t.routines.start}</button>
     </article>)}</div> : <Empty title={t.routines.empty} detail={t.home.noRoutines} />}
     {(openNew || editing) && <RoutineForm routine={editing} exercises={exercises} close={() => { setOpenNew(false); setEditing(null); }} save={item => {
       save(item); setOpenNew(false); setEditing(null);

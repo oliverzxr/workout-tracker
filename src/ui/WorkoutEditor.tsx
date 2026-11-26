@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { ArrowDown, ArrowLeft, ArrowUp, Check, Clock3, Copy, Ellipsis, Plus, RotateCcw, Trash2, X } from 'lucide-react';
-import { countLabel, formatInputLoad, formatNumber, shortDate, t } from '../app/pt-BR';
+import { formatInputLoad, formatNumber, t } from '../app/pt-BR';
 import { emptySet, move, parseSet, remaining, workoutExercise } from '../domain/model';
 import type { Draft, DraftExercise, DraftSet, Exercise, SavedSet, Workout } from '../domain/model';
 import { ExercisePicker } from './Catalog';
@@ -26,6 +26,7 @@ function Timer({ timer, update }: { timer: NonNullable<Draft['timer']>; update: 
     <div className="timer-name"><strong aria-live="polite">{seconds ? t.active.rest : t.active.timerComplete}</strong><small>{timer.exercise}</small></div>
     <button className="button secondary timer-extra" aria-label={t.active.addTime} onClick={() => update(Math.max(Date.now(), timer.endAt) + 15000)}>+15 s</button>
     <button className="icon-button" aria-label={t.active.stop} onClick={() => update(null)}><X size={19} /></button>
+    <progress className="rest-progress" max={Math.max(1, timer.duration)} value={Math.min(timer.duration, seconds)} aria-hidden="true" />
   </aside>;
 }
 
@@ -42,10 +43,12 @@ function ExerciseEntry({ entry, previous, change, menu }: {
   menu: (setId?: string) => void;
 }) {
   const [invalid, setInvalid] = useState<string | null>(null);
-  const patchSet = (id: string, patch: Partial<DraftSet>) => change(row => ({
-    ...row, sets: row.sets.map(set => set.id === id ? { ...set, ...patch } : set),
-  }));
-  return <section className="exercise-entry" aria-label={entry.name}>
+  const patchSet = (id: string, patch: Partial<DraftSet>) => {
+    if (invalid === id) setInvalid(null);
+    change(row => ({ ...row, sets: row.sets.map(set => set.id === id ? { ...set, ...patch } : set) }));
+  };
+  const next = entry.sets.findIndex(set => !set.completed);
+  return <section id={'movimento-' + entry.id} tabIndex={-1} className="exercise-entry" aria-label={entry.name}>
     <header className="exercise-head">
       <div><h2>{entry.name}</h2><p>{t.muscles[entry.muscle]} <span>·</span> {t.active.rest} {entry.rest ? entry.rest + ' s' : t.active.noRest}</p></div>
       <button className="icon-button" type="button" aria-label={t.active.options + ' ' + entry.name} onClick={() => menu()}><Ellipsis size={22} /></button>
@@ -56,22 +59,23 @@ function ExerciseEntry({ entry, previous, change, menu }: {
       const lastSets = previous?.sets.filter(item => item.kind === set.kind);
       const last = lastSets?.[sequence];
       const label = ' ' + t.active.series.toLocaleLowerCase() + ' ' + (index + 1);
-      return <div className={'set-grid set-row' + (set.completed ? ' completed' : '')} key={set.id}>
+      const helpId = invalid === set.id ? 'erro-serie-' + set.id : undefined;
+      return <div className={'set-grid set-row' + (set.completed ? ' completed' : '')} data-next={index === next ? true : undefined} key={set.id}>
         <button className={'set-kind ' + set.kind} onClick={() => menu(set.id)} type="button" title={t.kinds[set.kind]} aria-label={t.active.options + label + ' · ' + t.kinds[set.kind]}>
           {set.kind === 'warmup' ? 'A' : index + 1}
         </button>
         <Previous set={last} editing={set.completed} copy={() => {
           if (last) patchSet(set.id, { load: formatInputLoad(last.grams), reps: String(last.reps), rir: last.rir === null ? '' : String(last.rir) });
         }} />
-        <input aria-label={t.active.load + label} inputMode="decimal" placeholder="—" readOnly={set.completed} maxLength={20} value={set.load} onChange={event => patchSet(set.id, { load: event.target.value })} />
-        <input aria-label={t.common.reps + label} inputMode="numeric" placeholder="—" readOnly={set.completed} maxLength={5} value={set.reps} onChange={event => patchSet(set.id, { reps: event.target.value })} />
-        <input aria-label={t.common.rir + label} inputMode="numeric" placeholder="—" readOnly={set.completed} maxLength={5} value={set.rir} onChange={event => patchSet(set.id, { rir: event.target.value })} />
+        <input aria-label={t.active.load + label} aria-describedby={helpId} inputMode="decimal" placeholder="—" readOnly={set.completed} maxLength={20} value={set.load} onChange={event => patchSet(set.id, { load: event.target.value })} />
+        <input aria-label={t.common.reps + label} aria-describedby={helpId} inputMode="numeric" placeholder="—" readOnly={set.completed} maxLength={5} value={set.reps} onChange={event => patchSet(set.id, { reps: event.target.value })} />
+        <input aria-label={t.common.rir + label} aria-describedby={helpId} inputMode="numeric" placeholder="—" readOnly={set.completed} maxLength={5} value={set.rir} onChange={event => patchSet(set.id, { rir: event.target.value })} />
         <button className="check-set" type="button" aria-pressed={set.completed} aria-label={(set.completed ? t.active.reopen : t.active.complete) + ' ' + (index + 1)} onClick={() => {
           if (!set.completed && !parseSet(set)) { setInvalid(set.id); return; }
           setInvalid(null);
           patchSet(set.id, { completed: !set.completed });
         }}><Check size={21} /></button>
-        {invalid === set.id && <p className="error set-error" role="alert">{t.active.invalid}</p>}
+        {helpId && <p id={helpId} className="error set-error" role="alert">{t.active.invalid}</p>}
       </div>;
     })}
     <button className="text-button add-set" type="button" onClick={() => change(row => {
@@ -128,13 +132,25 @@ export function WorkoutEditor({ value, change, exercises, workouts, close, finis
   const [menu, setMenu] = useState<Menu | null>(null);
   const earlier = workouts.filter(item => item.id !== value.id && item.startedAt <= value.startedAt).sort((a, b) => b.startedAt.localeCompare(a.startedAt));
   const completed = value.exercises.reduce((count, item) => count + item.sets.filter(set => set.completed).length, 0);
+  const planned = value.exercises.reduce((count, item) => count + item.sets.length, 0);
   return <>
-    <div className="editor-top"><button className="text-button" onClick={close}><ArrowLeft size={17} />{editing ? t.common.cancel : t.nav.home}</button><span className="save-status">{saveStatus}</span></div>
-    <Title heading={editing ? t.active.editHeading : t.active.heading} />
-    <div className="workout-meta">
-      <label>{t.active.name}<input value={value.name} maxLength={80} onChange={event => { const name = event.target.value; change(current => ({ ...current, name })); }} /></label>
-      <span>{shortDate(value.startedAt)} · {countLabel(completed, t.active.series, t.common.sets)}</span>
-    </div>
+    <header className="session-heading">
+      <div className="editor-top"><button className="text-button" onClick={close}><ArrowLeft size={18} aria-hidden="true" />{editing ? t.common.cancel : t.nav.home}</button><span className="save-status">{saveStatus}</span></div>
+      <Title heading={editing ? t.active.editHeading : t.active.heading} />
+      <label className="session-name">{t.active.name}<input value={value.name} maxLength={80} onChange={event => { const name = event.target.value; change(current => ({ ...current, name })); }} /></label>
+      {planned > 0 && <div className="session-progress">
+        <span>{t.active.completedSets}</span><progress value={completed} max={planned} aria-label={t.active.completedSets} /><strong>{completed}/{planned}</strong>
+      </div>}
+    </header>
+    {value.exercises.length > 1 && <nav className="session-sequence" aria-label={t.active.jump}>
+      {value.exercises.map((item, index) => <button key={item.id} type="button" onClick={() => {
+        const exercise = document.getElementById('movimento-' + item.id);
+        exercise?.focus({ preventScroll: true });
+        exercise?.scrollIntoView({ block: 'start' });
+      }}>
+        <span>{index + 1}</span>{item.name}
+      </button>)}
+    </nav>}
     <div className="workout-exercises">
       {value.exercises.length === 0 && <Empty title={t.active.empty} />}
       {value.exercises.map(entry => <ExerciseEntry key={entry.id} entry={entry}
@@ -150,14 +166,16 @@ export function WorkoutEditor({ value, change, exercises, workouts, close, finis
         menu={setId => setMenu({ exerciseId: entry.id, setId })} />)}
     </div>
     <div className="workout-actions">
-      <button className="button secondary" onClick={() => setPicker(true)}><Plus size={18} />{t.catalog.pick}</button>
       <p className="muted rir-help">{t.active.rirHelp}</p>
       {error && <p className="error" role="alert">{error}</p>}
       {discard && <button className="text-button danger" onClick={discard}><RotateCcw size={16} />{t.active.discard}</button>}
     </div>
     <div className="workout-dock">
       {!editing && value.timer && <Timer timer={value.timer} update={endAt => change(current => ({ ...current, timer: endAt === null || !current.timer ? null : { ...current.timer, endAt } }))} />}
-      <button className="button primary finish-button" onClick={finish}><Check size={18} />{editing ? t.common.save : t.active.finish}</button>
+      <div className="dock-actions">
+        <button className="button secondary" onClick={() => setPicker(true)}><Plus size={18} aria-hidden="true" />{t.catalog.pick}</button>
+        <button className="button primary finish-button" onClick={finish}><Check size={18} aria-hidden="true" />{editing ? t.common.save : t.active.finish}</button>
+      </div>
     </div>
     {picker && <ExercisePicker exercises={exercises} choose={item => { change(current => ({ ...current, exercises: [...current.exercises, workoutExercise(item)] })); setPicker(false); }} close={() => setPicker(false)} />}
     {menu && <RowOptions key={menu.exerciseId + (menu.setId ?? '')} menu={menu} value={value} change={change} editing={editing} close={() => setMenu(null)} />}

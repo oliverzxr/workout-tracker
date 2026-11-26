@@ -5,9 +5,9 @@ import { download, exportBackup, exportCsv, importBackup } from '../data/export'
 import type { Snapshot } from '../domain/model';
 import { Title } from './primitives';
 
-export function Settings({ data, save, install, installed, offline }: {
+export function Settings({ data, save, install, installed, offline, demo }: {
   data: Snapshot; save: (value: Snapshot) => Promise<boolean>; install: (() => void) | null;
-  installed: boolean; offline: boolean;
+  installed: boolean; offline: boolean; demo?: boolean;
 }) {
   const file = useRef<HTMLInputElement>(null);
   const [message, setMessage] = useState('');
@@ -27,6 +27,14 @@ export function Settings({ data, save, install, installed, offline }: {
     }
     if (window.confirm(t.settings.restoreConfirm) && await save(restored)) setMessage(t.settings.restoreSuccess);
   }
+
+  if (demo) return <>
+    <Title heading={t.settings.heading} subtitle={t.shell.demo} />
+    <section className="panel settings-panel">
+      <h2><HardDrive size={21} aria-hidden="true" />{t.settings.local}</h2>
+      <p>{t.shell.demoNote}</p>
+    </section>
+  </>;
 
   return <>
     <Title heading={t.settings.heading} subtitle={t.settings.description} />
