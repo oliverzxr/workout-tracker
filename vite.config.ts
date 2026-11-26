@@ -3,11 +3,13 @@ import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 import { brand } from './src/app/pt-BR';
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   base: process.env.VITE_BASE_PATH || './',
+  build: mode === 'design' ? { outDir: 'dist-design', rollupOptions: { input: 'design.html' } } : undefined,
   plugins: [
     react(),
     VitePWA({
+      disable: mode === 'design',
       registerType: 'prompt',
       injectRegister: false,
       includeAssets: ['icons/apple-touch-icon.png', 'icons/mark.svg'],
@@ -30,4 +32,4 @@ export default defineConfig({
       },
     }),
   ],
-});
+}));

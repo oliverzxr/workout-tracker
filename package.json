@@ -6,16 +6,23 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "design": "vite --mode design --host 127.0.0.1 --port 4180 --strictPort",
+    "build:design": "vite build --mode design",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "test": "node --test tests/learning-baseline.cjs && vitest run",
     "test:e2e": "playwright test",
+    "test:design": "playwright test --config playwright.design.config.ts",
     "build": "npm run typecheck && vite build",
     "preview": "vite preview"
   },
-  "engines": { "node": ">=22.12.0" },
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "overrides": {
-    "workbox-build": { "glob": "^14.0.6" }
+    "workbox-build": {
+      "glob": "^14.0.6"
+    }
   },
   "dependencies": {
     "@fontsource/barlow-semi-condensed": "^5.2.0",
@@ -28,6 +35,9 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.0",
+    "@fontsource/barlow-condensed": "^5.3.0",
+    "@fontsource/newsreader": "^5.3.0",
+    "@fontsource/space-grotesk": "^5.3.0",
     "@playwright/test": "^1.51.0",
     "@types/node": "^22.15.0",
     "@types/react": "^19.0.0",

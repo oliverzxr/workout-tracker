@@ -14,6 +14,11 @@ import { Progress } from '../ui/Progress';
 import { Routines } from '../ui/Routines';
 import { Settings } from '../ui/Settings';
 import { WorkoutEditor } from '../ui/WorkoutEditor';
+import { ReviewHome } from '../review/ReviewHome';
+import { ReviewHistory } from '../review/ReviewHistory';
+import { ReviewNavigation } from '../review/ReviewNavigation';
+import { designCopy } from '../review/directions';
+import type { Direction } from '../review/directions';
 
 const tabs = [
   ['inicio', t.nav.home, House],
@@ -51,7 +56,8 @@ function useConnectivity() {
   return online;
 }
 
-export function App({ repository }: { repository: TrackerRepository }) {
+export function App({ repository, direction: requestedDirection }: { repository: TrackerRepository; direction?: Direction }) {
+  const direction = import.meta.env.MODE === 'design' ? requestedDirection : undefined;
   const { data, update, status, reload, retry } = useTracker(repository);
   const pwa = usePwa();
   const online = useConnectivity();
@@ -131,6 +137,7 @@ export function App({ repository }: { repository: TrackerRepository }) {
   const selected = data?.workouts.find(item => item.id === route.id);
   const editor = route.page === 'editar' && selected ? editing ?? editWorkout(selected, formatInputLoad) : data?.draft;
   const editingHistory = route.page === 'editar';
+  const sessionOpen = Boolean(editor && (route.page === 'treino' || editingHistory));
   const alert = status === 'error' || status === 'conflict';
   const mainTab = route.page === 'exercicios' ? 'rotinas' : route.page === 'detalhes' || route.page === 'editar' ? 'historico' : route.page === 'treino' ? 'inicio' : route.page;
 
@@ -153,12 +160,12 @@ export function App({ repository }: { repository: TrackerRepository }) {
   if (data) {
     if (route.page === 'rotinas') page = <Routines routines={data.routines} exercises={data.exercises} openNew={newRoutine}
       setOpenNew={setNewRoutine} save={saveRoutine} remove={routine => { void update(current => ({ ...current, routines: current.routines.filter(item => item.id !== routine.id) })); }}
-      start={start} catalog={() => navigate('exercicios')} />;
+      start={start} catalog={() => navigate('exercicios')} direction={direction} />;
     else if (route.page === 'exercicios') page = <><div className="editor-top"><button className="text-button" onClick={() => navigate('rotinas')}><ArrowLeft size={17} />{t.nav.routines}</button></div>
       <Catalog exercises={data.exercises} save={saveExercise} /></>;
-    else if (route.page === 'progresso') page = <Progress workouts={data.workouts} exercises={data.exercises} />;
+    else if (route.page === 'progresso') page = <Progress workouts={data.workouts} exercises={data.exercises} direction={direction} />;
     else if (route.page === 'ajustes') page = <Settings data={data} save={(value: Snapshot) => update(() => value)}
-      install={pwa.install} installed={pwa.installed} offline={pwa.offline} />;
+      install={pwa.install} installed={pwa.installed} offline={pwa.offline} demo={Boolean(direction)} />;
     else if (route.page === 'detalhes' && selected) page = <WorkoutDetail value={selected} back={() => navigate('historico')}
       edit={() => navigate('editar', selected.id)} remove={async () => {
         if (await update(current => ({ ...current, workouts: current.workouts.filter(item => item.id !== selected.id) }))) navigate('historico');
@@ -174,14 +181,18 @@ export function App({ repository }: { repository: TrackerRepository }) {
       exercises={data.exercises} workouts={data.workouts} close={() => editingHistory && selected ? showWorkout(selected) : navigate('inicio')}
       finish={() => { void finish(); }} discard={editingHistory ? undefined : async () => {
         if (window.confirm(t.active.confirmDiscard) && await update(current => ({ ...current, draft: null }))) navigate('inicio');
-      }} saveStatus={editingHistory || alert || status === 'loading' ? '' : t.storage[status]} error={editorError} />;
-    else if (mainTab === 'historico') page = <History workouts={data.workouts} detail={showWorkout} />;
-    else page = <Home data={data} start={start} resume={() => navigate('treino')} routines={() => navigate('rotinas')}
-      create={showNewRoutine} history={() => navigate('historico')} detail={showWorkout} />;
+      }} saveStatus={direction ? designCopy.demoSaved : editingHistory || alert || status === 'loading' ? '' : t.storage[status]} error={editorError} direction={direction} />;
+    else if (mainTab === 'historico') page = direction ? <ReviewHistory workouts={data.workouts} detail={showWorkout} home={() => navigate('inicio')} /> : <History workouts={data.workouts} detail={showWorkout} />;
+    else {
+      const home = { data, start, resume: () => navigate('treino'), routines: () => navigate('rotinas'), create: showNewRoutine, history: () => navigate('historico'), detail: showWorkout };
+      page = direction ? <ReviewHome {...home} direction={direction} /> : <Home {...home} />;
+    }
   }
 
-  return <div className="app-shell">
+  return <div className="app-shell" data-direction={direction} data-session={direction && sessionOpen ? true : undefined}>
     <a href="#conteudo" className="skip-link" onClick={event => { event.preventDefault(); content.current?.focus(); }}>{t.shell.skip}</a>
+    {direction ? <ReviewNavigation direction={direction} items={tabs.slice(0, 4)} active={mainTab} home={() => navigate('inicio')}
+      settings={() => navigate('ajustes')} train={() => data?.draft ? navigate('treino') : start()} navigate={navigate} /> : <>
     <aside className="rail">
       <button className="brand" onClick={() => navigate('inicio')}><span className="brand-mark"><Dumbbell size={22} strokeWidth={1.8} /></span>
         <span>{brand.name}</span></button>
@@ -192,7 +203,7 @@ export function App({ repository }: { repository: TrackerRepository }) {
     </aside>
     <header className="mobile-brand"><button className="brand" onClick={() => navigate('inicio')}><span className="brand-mark"><Dumbbell size={19} /></span><span>{brand.name}</span></button>
       <button className="icon-button" aria-label={t.shell.localHelp} onClick={() => navigate('ajustes')}>{online ? <HardDrive size={19} /> : <WifiOff size={19} />}</button>
-    </header>
+    </header></>}
     <main ref={content} id="conteudo" tabIndex={-1} className="main-content">
       {!online && <div className="banner muted"><WifiOff size={16} />{t.shell.offline}</div>}
       {pwa.update && <div className="banner"><span>{t.settings.updateNotice}</span><button className="button secondary" disabled={status !== 'saved' || editDirty.current} onClick={pwa.applyUpdate}>{t.settings.update}</button></div>}

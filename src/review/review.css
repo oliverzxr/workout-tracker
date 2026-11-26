@@ -1,0 +1,344 @@
+@layer review {
+  [data-direction="arranque"] {
+    --bg:#171611; --panel:#262318; --field:#302c20; --text:#faf4df; --muted:#c6bda4; --line:#484231; --border:#63563d;
+    --action:#f7d45e; --on-action:#211a06; --action-tint:#40351b; --success:#dfe7a4; --success-bg:#2d351c;
+    --display:"Barlow Condensed",sans-serif; --body:"Inter",sans-serif; --shape:4px;
+  }
+  [data-direction="caderno"] {
+    --bg:#f3f0e7; --panel:#e9e5da; --field:#fffdf7; --text:#1a2924; --muted:#45564c; --line:#c8cabd; --border:#8a9585;
+    --action:#23493e; --on-action:#fffdf3; --action-tint:#dfe7db; --success:#21493a; --success-bg:#e2e9de;
+    --display:"Newsreader",Georgia,serif; --body:"Inter",sans-serif; --shape:6px;
+  }
+  [data-direction="cadencia"] {
+    --bg:#111724; --panel:#202a3e; --field:#192338; --text:#f1f3ff; --muted:#b8c4e1; --line:#35415d; --border:#56668d;
+    --action:#cbd4ff; --on-action:#151e33; --action-tint:#303e61; --success:#a9efd0; --success-bg:#203b40;
+    --display:"Space Grotesk",sans-serif; --body:"Space Grotesk",sans-serif; --shape:18px;
+  }
+  .review-gallery { min-height:100dvh; background:#161719; padding:clamp(30px,7vw,100px) max(18px,calc((100vw - 1110px)/2)); font-family:"Inter",sans-serif; }
+  .review-gallery > header { margin-bottom:30px; max-width:630px; }
+  .review-gallery > header p { color:#c5c2c9; margin-block:.65rem; }
+  .review-gallery h1 { font:700 clamp(2.5rem,5.6vw,4rem)/1.02 "Space Grotesk",sans-serif; }
+  .gallery-grid { display:grid; gap:14px; }
+  .gallery-direction { color:var(--text); background:var(--bg); border:1px solid var(--line); border-radius:max(7px,var(--shape)); overflow:hidden; }
+  .gallery-sample { display:flex; align-items:center; gap:.7rem; min-height:104px; padding:1rem; font:700 2.65rem/1 var(--display); background:var(--panel); }
+  .gallery-sample svg { color:var(--action); }
+  .gallery-info { display:grid; gap:.9rem; padding:1.1rem; font-size:.92rem; }
+  .gallery-info p + p { min-height:3em; color:var(--muted); }
+  .gallery-info a { display:inline-flex; align-items:center; justify-content:space-between; gap:.35rem; }
+  .gallery-primary { background:var(--action); color:var(--on-action); font-weight:700; text-decoration:none; min-height:48px; border-radius:var(--shape); padding:.5rem .8rem; }
+  .gallery-links { display:flex; flex-wrap:wrap; gap:.3rem .8rem; }
+  .gallery-links a { color:var(--action); min-height:44px; }
+
+  .app-shell[data-direction] { color:var(--text); background:var(--bg); min-height:100dvh; font:400 1rem/1.46 var(--body); --pink:var(--action); --positive:var(--success); --nav-height:66px; }
+  .app-shell[data-direction="caderno"] { color-scheme:light; }
+  .app-shell[data-direction] .error { color:#fcb0a3; }
+  .app-shell[data-direction="caderno"] .error { color:#9e3625; }
+  .app-shell[data-direction] :focus-visible, .gallery-direction a:focus-visible { outline-color:var(--action); }
+  .app-shell[data-direction] h1 { font:700 clamp(2.65rem,7.9vw,5.1rem)/.97 var(--display); letter-spacing:-.03em; }
+  .app-shell[data-direction] h2 { font:700 clamp(1.45rem,4.9vw,2.4rem)/1.04 var(--display); }
+  .app-shell[data-direction] .page-title { margin-bottom:1.55rem; }
+  .app-shell[data-direction] .main-content { max-width:1180px; width:100%; margin-inline:auto; padding:1.5rem max(17px,env(safe-area-inset-right)) calc(var(--nav-height) + var(--safe-bottom) + 1.85rem) max(17px,env(safe-area-inset-left)); }
+  .app-shell[data-direction] .button { border-radius:var(--shape); min-height:46px; padding-inline:.92rem; }
+  .app-shell[data-direction] .button.primary { background:var(--action); color:var(--on-action); border-color:var(--action); }
+  .app-shell[data-direction] .button.primary:hover { background:color-mix(in srgb,var(--action) 86%,var(--text)); }
+  .app-shell[data-direction] .button.secondary { background:var(--panel); color:var(--text); border-color:var(--border); }
+  .app-shell[data-direction] .button.secondary:hover, .app-shell[data-direction] .button.secondary[aria-pressed="true"] { background:var(--action-tint); color:var(--text); border-color:var(--action); }
+  .app-shell[data-direction] .text-button { color:var(--action); }
+  .app-shell[data-direction] .text-button:hover, .app-shell[data-direction] .icon-button:hover:not(:disabled) { background:var(--action-tint); color:var(--text); }
+  .app-shell[data-direction] .text-button.danger, .app-shell[data-direction] .button.danger { color:#f9a694; }
+  .app-shell[data-direction="caderno"] .text-button.danger, .app-shell[data-direction="caderno"] .button.danger { color:#8f3425; background:transparent; }
+  .app-shell[data-direction] input, .app-shell[data-direction] select { border-radius:max(5px,calc(var(--shape)/2)); }
+  .app-shell[data-direction] button, .review-gallery a { touch-action:manipulation; }
+  .app-shell[data-direction] dialog { border-color:var(--border); }
+  .app-shell[data-direction] .panel, .app-shell[data-direction] .list-row { border-radius:var(--shape); }
+  .app-shell[data-direction] .list-row.clickable:hover { background:var(--action-tint); border-color:var(--action); }
+  .app-shell[data-direction] .row-icon, .app-shell[data-direction] .empty-icon { color:var(--action); background:var(--action-tint); }
+
+  .review-chrome { padding:max(0px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) 0 max(16px,env(safe-area-inset-left)); border-bottom:1px solid var(--line); }
+  .review-chrome-inner { display:flex; justify-content:space-between; align-items:center; gap:.35rem; min-height:59px; max-width:1110px; margin-inline:auto; }
+  .review-brand { display:inline-flex; align-items:center; gap:.45rem; min-height:44px; padding:0; border:0; background:none; font:700 1.36rem/1 var(--display); text-align:start; }
+  .review-brand svg { color:var(--action); }
+  .review-tools { display:flex; align-items:center; gap:.35rem; }
+  .review-compare { display:grid; place-items:center; min-width:44px; min-height:44px; font-size:.77rem; font-weight:600; color:var(--muted); text-decoration:none; }
+  .review-compare:hover { text-decoration:underline; color:var(--text); }
+  .review-nav { position:fixed; bottom:0; left:0; right:0; z-index:7; display:flex; align-items:stretch; min-height:calc(var(--nav-height) + var(--safe-bottom)); padding:0 9px var(--safe-bottom); background:var(--bg); border-top:1px solid var(--line); }
+  .review-nav-slot { display:contents; }
+  .review-nav button { display:flex; flex:1 1 0; min-width:0; min-height:53px; flex-direction:column; justify-content:center; align-items:center; gap:4px; border:0; border-block-start:2px solid transparent; background:none; color:var(--muted); font:600 .76rem/1.15 var(--body); padding:.2rem .1rem; }
+  .review-nav button[aria-current="page"] { color:var(--action); border-block-start-color:var(--action); }
+  .review-nav button:hover { color:var(--text); }
+  [data-direction="caderno"] .review-nav button svg { display:none; }
+  [data-direction="caderno"] .review-nav button { align-self:start; min-height:58px; font-size:.86rem; }
+  [data-direction="cadencia"] .review-nav { margin:0 8px max(6px,var(--safe-bottom)); min-height:62px; border:1px solid var(--border); background:#192236; border-radius:23px; padding:2px 5px; }
+  [data-direction="cadencia"] .review-nav button { border:0; border-radius:15px; }
+  [data-direction="cadencia"] .review-nav button[aria-current="page"] { background:#283452; }
+  [data-direction="cadencia"] .review-nav .review-train-tab { background:var(--action); color:var(--on-action); flex:0 0 57px; margin:-11px 3px 4px; min-height:62px; box-shadow:0 0 0 4px var(--bg); font-size:.74rem; }
+
+  .home-lead, .home-index { display:grid; gap:1.25rem; }
+  .review-launch { position:relative; isolation:isolate; min-width:0; }
+  .review-launch-copy { position:relative; z-index:1; min-width:0; }
+  .launch-session { display:grid; justify-items:start; gap:.45rem; }
+  .launch-session p, .training-week > p { color:var(--muted); font-size:.9rem; }
+  .launch-session .button { margin-top:.45rem; }
+  .launch-session .text-button { min-height:42px; padding-inline:0; text-decoration:underline; text-underline-offset:4px; }
+  .session-state { color:var(--muted); font-size:.82rem; }
+  .training-week { min-width:0; padding-block:.95rem .3rem; border-top:1px solid var(--line); }
+  .training-week header, .review-index-section > header { display:flex; align-items:center; justify-content:space-between; gap:.4rem; }
+  .training-week header span { color:var(--muted); font-size:.81rem; white-space:nowrap; }
+  .week-days, .routine-plan ol, .review-index-section ol, .history-month ol, .exercise-sequence ol { margin:0; padding:0; list-style:none; }
+  .week-days { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); margin-block:.75rem .6rem; gap:.28rem; }
+  .week-days li { display:grid; justify-items:center; gap:.1rem; padding:.27rem 0; min-width:0; border:1px solid transparent; border-radius:max(6px,var(--shape)); }
+  .week-days li[data-done="true"] { background:var(--action-tint); color:var(--text); }
+  .week-days li[aria-current="date"] { border-color:var(--action); }
+  .week-days li > span:first-child { color:var(--muted); font-size:.72rem; }
+  .week-days strong { font-size:1.06rem; font-variant-numeric:tabular-nums; }
+  .week-status { display:grid; place-items:center; min-height:15px; color:var(--action); }
+  .week-status > span { width:3px; height:3px; border-radius:50%; background:var(--border); }
+  .week-totals { display:flex; gap:.45rem 1.3rem; flex-wrap:wrap; color:var(--muted); font-size:.82rem; }
+  .week-totals strong { color:var(--text); }
+  .home-index { margin-top:1.3rem; }
+  .review-index-section { min-width:0; }
+  .review-index-section > header { border-bottom:1px solid var(--line); margin-bottom:.18rem; min-height:45px; }
+  .review-index-section > header h2 { font-size:clamp(1.45rem,5.1vw,2rem); }
+  .review-index-section li > button, .latest-entry { width:100%; background:none; border:0; border-bottom:1px solid var(--line); padding:.65rem .2rem; color:var(--text); display:flex; align-items:center; gap:.65rem; text-align:start; min-height:62px; }
+  .review-index-section li > button:hover, .latest-entry:hover { background:var(--action-tint); }
+  .review-index-section li > button > span, .latest-entry > span { flex:1; display:grid; min-width:0; }
+  .review-index-section li small, .latest-entry small { color:var(--muted); }
+  .review-index-section li svg, .latest-entry svg { color:var(--action); }
+  .review-empty { padding:1rem 0; color:var(--muted); display:grid; gap:.6rem; justify-items:start; }
+  .review-empty h2 { color:var(--text); }
+  .review-empty p { max-width:42ch; }
+
+  [data-direction="arranque"] .review-launch { display:grid; align-items:end; min-height:285px; background:#1e1a12; padding:clamp(15px,3vw,38px); overflow:hidden; border-block-end:4px solid var(--action); }
+  [data-direction="arranque"] .review-launch h1 { font-size:clamp(3.5rem,12vw,8rem); text-transform:uppercase; letter-spacing:-.025em; }
+  [data-direction="arranque"] .launch-session { margin-top:.6rem; }
+  [data-direction="arranque"] .launch-session h2 { font-size:clamp(2rem,7.1vw,3rem); }
+  .launch-photo { position:absolute; inset:0; z-index:0; background:url("./arranque.jpg") 57% 50% / cover no-repeat; }
+  .launch-photo::after { content:""; display:block; height:100%; background:linear-gradient(90deg,#171611 0%,#171611b5 32%,#17161100 78%); }
+  [data-direction="arranque"] .training-week { border-top:0; padding:.55rem 0 0; }
+  [data-direction="arranque"] .home-index { border-top:1px solid var(--line); padding-top:.4rem; }
+  [data-direction="caderno"] .review-home h1 { margin-bottom:1.3rem; }
+  [data-direction="caderno"] .launch-session { border-block:1px solid var(--line); padding:1rem 0 .75rem; }
+  [data-direction="caderno"] .launch-session h2 { font-size:clamp(2.3rem,8.2vw,3.5rem); }
+  [data-direction="caderno"] .training-week { border-top:0; }
+  [data-direction="caderno"] .home-index { padding-top:.5rem; border-top:1px solid var(--line); }
+  [data-direction="caderno"] .review-index-section li strong, [data-direction="caderno"] .latest-entry strong { font:600 1.46rem/1.1 var(--display); }
+  [data-direction="cadencia"] .review-launch h1 { margin-bottom:.85rem; }
+  [data-direction="cadencia"] .launch-session { background:#cbd4ff; color:#17213a; border-radius:25px 25px 25px 7px; padding:1.15rem; min-height:173px; align-content:center; }
+  [data-direction="cadencia"] .launch-session h2 { font-size:clamp(2rem,7.5vw,3.2rem); }
+  [data-direction="cadencia"] .launch-session p, [data-direction="cadencia"] .session-state { color:#353f60; }
+  .app-shell[data-direction="cadencia"] .launch-session .button.primary { background:#263459; color:#f2f4ff; border-color:#263459; border-radius:25px; }
+  .app-shell[data-direction="cadencia"] .launch-session .button.primary:hover { background:#374675; }
+  [data-direction="cadencia"] .launch-session .text-button { color:#202c4d; padding-inline:.2rem; }
+  [data-direction="cadencia"] .launch-session .text-button:hover { color:#141d32; background:#b9c5f4; }
+  [data-direction="cadencia"] .launch-session :focus-visible { outline-color:#263459; }
+  [data-direction="cadencia"] .training-week { background:var(--panel); border:0; border-radius:22px 22px 7px 22px; padding:.95rem .83rem; align-self:end; }
+  [data-direction="cadencia"] .review-index-section > header { border-bottom:0; }
+  [data-direction="cadencia"] .review-index-section li { margin-bottom:.32rem; }
+  [data-direction="cadencia"] .review-index-section li > button, [data-direction="cadencia"] .latest-entry { border:0; border-radius:13px; background:#1c263a; padding-inline:.8rem; }
+  .routine-tools { display:flex; gap:.5rem; flex-wrap:wrap; }
+  .routine-grid { display:grid; gap:1.1rem; }
+  .routine-plan { min-width:0; }
+  .routine-plan header, .routine-plan footer { display:flex; justify-content:space-between; align-items:center; gap:.45rem; }
+  .routine-plan header { padding-bottom:.55rem; }
+  .routine-plan header p { margin-top:.22rem; color:var(--muted); font-size:.82rem; }
+  .routine-plan li { display:grid; grid-template-columns:23px minmax(0,1fr) auto; align-items:center; gap:.4rem; padding:.58rem 0; border-top:1px solid var(--line); }
+  .routine-plan li small, .plan-index { color:var(--muted); }
+  .routine-plan li > span:nth-child(2) { overflow-wrap:anywhere; font-size:.89rem; }
+  .routine-plan li small { white-space:nowrap; }
+  .routine-plan footer { border-top:1px solid var(--line); padding-top:.5rem; }
+  [data-direction="arranque"] .routine-plan { background:var(--panel); border-top:4px solid var(--action); padding:.75rem 1rem; }
+  [data-direction="caderno"] .routine-plan { border-top:1px solid var(--border); padding:.85rem 0; }
+  [data-direction="caderno"] .routine-plan li { grid-template-columns:29px minmax(0,1fr) auto; }
+  [data-direction="caderno"] .plan-index { font:600 1.25rem/1 var(--display); }
+  [data-direction="cadencia"] .routine-plan { border-radius:24px; background:var(--panel); padding:1rem; }
+  [data-direction="cadencia"] .plan-index { color:var(--action); font-variant-numeric:tabular-nums; }
+
+  .history-month { display:grid; gap:.35rem; margin-bottom:1.5rem; }
+  .session-line { display:grid; align-items:center; grid-template-columns:42px minmax(0,1fr) auto 16px; gap:.6rem; width:100%; min-height:68px; padding:.4rem .22rem; text-align:start; background:none; border:0; border-bottom:1px solid var(--line); color:var(--text); }
+  .session-line:hover { background:var(--action-tint); }
+  .session-date, .session-description, .session-sets { display:grid; min-width:0; }
+  .session-date { justify-items:center; }
+  .session-date strong { font:700 2.15rem/.9 var(--display); font-variant-numeric:tabular-nums; }
+  .session-line small { font-size:.76rem; color:var(--muted); }
+  .session-description strong { overflow-wrap:anywhere; }
+  .session-sets { text-align:end; }
+  .session-sets strong { font-variant-numeric:tabular-nums; }
+  [data-direction="arranque"] .session-date { color:var(--action); border-inline-end:1px solid var(--line); padding-right:.25rem; }
+  [data-direction="caderno"] .history-month { border-block-start:1px solid var(--border); padding-top:.55rem; }
+  [data-direction="caderno"] .session-line { grid-template-columns:47px minmax(0,1fr) auto 16px; }
+  [data-direction="caderno"] .session-description strong { font:600 1.48rem/1.02 var(--display); }
+  [data-direction="cadencia"] .session-line { background:var(--panel); border:0; border-radius:14px; padding-inline:.55rem; margin-top:.36rem; }
+  [data-direction="cadencia"] .session-date { background:var(--action-tint); border-radius:8px; padding:.33rem 0; color:var(--action); }
+
+  .review-progress .section { margin-top:0; }
+  .progress-layout { display:grid; gap:1.4rem; }
+  .review-progress .summary { background:transparent; border-color:var(--line); border-radius:var(--shape); container-type:inline-size; grid-template-columns:minmax(0,.8fr) minmax(0,1fr) minmax(0,1.32fr); }
+  .review-progress .summary strong, .review-progress .records strong { font-size:clamp(1.6rem,6.9vw,3rem); }
+  .review-progress .summary > div:last-child strong { font-size:clamp(1.2rem,8cqi,2.65rem); overflow-wrap:normal; }
+  .review-progress .summary span { font-size:.77rem; }
+  .review-progress .panel { border-color:var(--line); }
+  .review-progress .progress-panel { margin-bottom:0; }
+  .review-progress .chart polyline { stroke:var(--action); stroke-width:2.8; }
+  .review-progress .chart circle { fill:var(--action); stroke:var(--panel); }
+  .review-progress .chart line { stroke:var(--border); }
+  .review-progress th progress { display:block; width:min(7rem,90%); height:4px; margin-top:.28rem; }
+  .review-progress .progress-muscles .panel { background:transparent; }
+  .review-progress .progress-muscles table { font-size:.82rem; }
+  [data-direction="arranque"] .review-progress .summary { border:0; border-block:1px solid var(--line); }
+  [data-direction="arranque"] .review-progress .summary strong { color:var(--action); }
+  [data-direction="caderno"] .review-progress .progress-panel, [data-direction="caderno"] .review-progress .summary { background:transparent; border:0; border-block:1px solid var(--line); padding-inline:0; }
+  [data-direction="caderno"] .review-progress .summary > div:first-child { padding-inline-start:0; }
+  [data-direction="cadencia"] .review-progress .progress-panel { border:0; border-radius:27px; }
+  [data-direction="cadencia"] .review-progress .chart polyline { stroke:#f4a88f; }
+  [data-direction="cadencia"] .review-progress .chart circle { fill:#f4a88f; }
+  [data-direction="cadencia"] .progress-layout > div { display:grid; align-content:start; gap:1.15rem; }
+
+  .app-shell[data-direction] progress { appearance:none; accent-color:var(--action); border:0; background:var(--line); border-radius:6px; overflow:hidden; }
+  .app-shell[data-direction] progress::-webkit-progress-bar { background:var(--line); }
+  .app-shell[data-direction] progress::-webkit-progress-value { background:var(--action); }
+  .app-shell[data-direction] progress::-moz-progress-bar { background:var(--action); }
+  .review-workout-head { padding-bottom:.45rem; }
+  .workout-head-actions { display:flex; align-items:center; justify-content:space-between; gap:.42rem; margin-bottom:.5rem; }
+  .workout-head-actions .save-status { flex:1; font-size:.75rem; }
+  .workout-head-actions .back-session { margin-inline-start:-5px; color:var(--text); }
+  .review-workout-head .finish-top { border-color:var(--action); color:var(--action); background:transparent; padding-inline:.67rem; min-height:44px; white-space:nowrap; }
+  .review-workout-head .finish-top:hover { background:var(--action-tint); }
+  .workout-head-name { position:relative; display:flex; gap:.3rem; justify-content:space-between; align-items:end; min-width:0; }
+  .workout-head-name p { color:var(--muted); font-size:.82rem; margin-bottom:.23rem; }
+  .workout-head-name > div { min-width:0; }
+  .workout-head-name h1 { overflow-wrap:anywhere; }
+  .edit-workout-name summary { display:grid; place-items:center; padding:0; min-width:44px; min-height:44px; cursor:pointer; list-style:none; color:var(--muted); }
+  .edit-workout-name summary::-webkit-details-marker { display:none; }
+  .edit-workout-name label { position:absolute; right:0; top:100%; z-index:4; width:min(260px,100%); padding:.55rem; background:var(--bg); border:1px solid var(--border); border-radius:8px; }
+  .workout-progress { display:grid; grid-template-columns:auto minmax(35px,1fr) auto; align-items:center; gap:.55rem; margin-block:.8rem .45rem; color:var(--muted); font-size:.81rem; }
+  .workout-progress span { display:flex; align-items:center; gap:.3rem; }
+  .workout-progress progress { width:100%; height:6px; }
+  .workout-progress strong { color:var(--text); font-variant-numeric:tabular-nums; }
+  .exercise-sequence { min-width:0; padding-block:.2rem; }
+  .exercise-sequence ol { display:flex; overflow:auto; gap:.4rem; padding:.15rem .13rem .38rem; scrollbar-width:thin; }
+  .exercise-sequence li { flex:0 0 auto; }
+  .exercise-sequence button { min-height:44px; padding:.33rem .48rem; display:flex; align-items:center; gap:.4rem; border:1px solid var(--line); border-radius:var(--shape); background:transparent; color:var(--text); font-size:.8rem; text-align:start; }
+  .exercise-sequence button[aria-pressed="true"] { background:var(--action-tint); border-color:var(--action); }
+  .sequence-n { color:var(--action); font-weight:700; font-variant-numeric:tabular-nums; }
+  .sequence-count { color:var(--muted); font-size:.75rem; font-variant-numeric:tabular-nums; }
+  .sequence-arrow { display:none; }
+  .app-shell[data-direction] .workout-exercises { gap:.95rem; }
+  .app-shell[data-direction] .exercise-entry { scroll-margin-top:.65rem; padding:.82rem; background:var(--panel); border-radius:var(--shape); }
+  .app-shell[data-direction] .exercise-head h2 { font-size:clamp(1.68rem,6vw,2.45rem); }
+  .app-shell[data-direction] .exercise-head .icon-button { color:var(--muted); }
+  .app-shell[data-direction] .set-head { min-height:32px; font-size:.77rem; }
+  .app-shell[data-direction] .set-row { padding:.33rem 0; }
+  .app-shell[data-direction] .set-row input { background:var(--field); }
+  .app-shell[data-direction] .set-kind, .app-shell[data-direction] .check-set { border-radius:max(4px,calc(var(--shape)/2)); }
+  .app-shell[data-direction] .set-kind { background:transparent; border-color:var(--line); }
+  .app-shell[data-direction] .set-kind.warmup { color:var(--action); background:var(--action-tint); }
+  .app-shell[data-direction] .check-set { background:transparent; color:var(--action); border-color:var(--border); }
+  .app-shell[data-direction] .check-set:hover { background:var(--action-tint); }
+  .app-shell[data-direction] .set-row.completed input, .app-shell[data-direction] .completed .check-set { background:var(--success-bg); color:var(--success); border-color:color-mix(in srgb,var(--success) 34%,var(--line)); }
+  .app-shell[data-direction] .previous-value { line-height:1.25; min-height:25px; }
+  .app-shell[data-direction] .previous-value > span { overflow-wrap:anywhere; }
+  .app-shell[data-direction] .set-row:focus-within { border-top-color:var(--action); }
+  .app-shell[data-direction] .timer { background:var(--action-tint); border-color:var(--border); border-radius:var(--shape); }
+  .app-shell[data-direction] .timer-name strong { color:var(--text); }
+  .app-shell[data-direction] .timer-time { color:var(--action); font-family:var(--display); }
+  .app-shell[data-direction] .timer-icon { color:var(--action); }
+  .app-shell[data-direction] .timer button { color:var(--text); background:transparent; }
+  .app-shell[data-direction] .timer button:hover { background:var(--panel); }
+  .app-shell[data-direction] .workout-dock:empty { display:none; }
+  .editor-error { margin:.35rem 0 .7rem; }
+  .app-shell[data-direction="arranque"] .workout-head-name h1 { text-transform:uppercase; }
+  .app-shell[data-direction="arranque"] .exercise-entry { border:0; border-inline-start:3px solid var(--action); }
+  [data-direction="arranque"] .set-row:not(.completed) .check-set { background:var(--action); color:var(--on-action); border-color:var(--action); }
+  [data-direction="arranque"] .timer-time { font-size:2.25rem; }
+  [data-direction="caderno"] .workout-head-name { padding-bottom:.55rem; border-bottom:1px solid var(--line); }
+  .app-shell[data-direction="caderno"] .exercise-entry { border:0; border-top:1px solid var(--border); border-radius:0; background:transparent; padding-inline:0; }
+  .app-shell[data-direction="caderno"] .set-row input { border-color:var(--line); border-width:0 0 1px; background:transparent; }
+  [data-direction="caderno"] .set-grid .set-kind { font:600 1.22rem/1 var(--display); border:0; }
+  [data-direction="caderno"] .set-grid .set-kind.warmup { border:1px solid var(--line); }
+  .app-shell[data-direction="caderno"] .set-row.completed input { background:transparent; }
+  .app-shell[data-direction="caderno"] .timer { border:1px solid var(--border); background:var(--panel); }
+  [data-direction="cadencia"] .workout-progress progress { height:8px; }
+  [data-direction="cadencia"] .exercise-sequence h2 { margin-block:.35rem .5rem; font-size:1rem; }
+  [data-direction="cadencia"] .exercise-sequence button { border-radius:13px; border-color:var(--line); background:#182136; }
+  [data-direction="cadencia"] .exercise-sequence button[aria-pressed="true"] { border-color:var(--action); background:var(--action-tint); }
+  [data-direction="cadencia"] .sequence-n { display:grid; place-items:center; width:30px; height:30px; border-radius:8px; background:var(--action-tint); color:var(--action); }
+  [data-direction="cadencia"] .exercise-sequence button[aria-pressed="true"] .sequence-n { background:var(--action); color:var(--on-action); }
+  .app-shell[data-direction="cadencia"] .exercise-entry { border:0; border-radius:22px 22px 22px 7px; }
+  .app-shell[data-direction="cadencia"] .timer { background:#2c2a42; border-color:#6e5570; }
+  .app-shell[data-direction="cadencia"] .timer-time, .app-shell[data-direction="cadencia"] .timer-icon { color:#f4a88f; }
+  [data-direction="cadencia"] .workout-dock .add-exercise { border-radius:28px; }
+  [data-direction="cadencia"] .pending-sets h3 { color:var(--muted); font:600 .85rem/1.45 var(--body); margin:.45rem 0 .15rem; }
+  [data-direction="cadencia"] .set-row[data-next="true"] .check-set { background:var(--action); border-color:var(--action); color:var(--on-action); border-radius:50%; }
+  [data-direction="cadencia"] .done-sets { border-block:1px solid var(--line); margin-top:.6rem; }
+  [data-direction="cadencia"] .done-sets summary { cursor:pointer; align-content:center; min-height:44px; color:var(--action); font-size:.89rem; padding-inline:.15rem; }
+  [data-direction="cadencia"] .exercise-done { display:flex; gap:.45rem; align-items:center; min-height:48px; color:var(--success); }
+  @media (max-width:899px) {
+    .app-shell[data-direction][data-session="true"] .review-chrome { display:none; }
+    .app-shell[data-direction][data-session="true"] .main-content { padding-top:calc(env(safe-area-inset-top,0px) + .55rem); padding-bottom:calc(var(--safe-bottom) + 12rem); }
+    .app-shell[data-direction] .workout-dock { position:fixed; inset:auto 0 0; z-index:4; gap:.4rem; margin:0; padding:.5rem max(17px,env(safe-area-inset-right)) calc(var(--safe-bottom) + .55rem) max(17px,env(safe-area-inset-left)); border-top:1px solid var(--line); }
+    [data-direction="arranque"] .home-lead { gap:.75rem; }
+    [data-direction="arranque"] .review-launch { margin-inline:-17px; padding-inline:17px; }
+    [data-direction="arranque"] .launch-photo { background-position:63% 50%; }
+  }
+  @media (min-width:520px) and (max-width:899px) {
+    .gallery-grid { grid-template-columns:1fr 1fr; }
+  }
+  @media (min-width:900px) {
+    .gallery-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
+    .app-shell[data-direction] .main-content { padding:2.5rem 35px 4rem; }
+    .app-shell[data-direction="caderno"] .main-content, [data-direction="caderno"] .review-chrome-inner { max-width:1000px; }
+    .review-chrome { padding-inline:35px; }
+    .review-chrome-inner { min-height:67px; gap:.85rem; }
+    .review-nav, [data-direction="cadencia"] .review-nav { position:static; min-height:49px; border:0; border-radius:0; background:none; margin:0; padding:0; gap:.85rem; }
+    .review-nav button, [data-direction="caderno"] .review-nav button { min-height:49px; min-width:max-content; flex-direction:row; flex:0 1 auto; padding-inline:.38rem; font-size:.89rem; }
+    .review-nav button, .review-nav button[aria-current="page"] { border-block-start:0; border-block-end:2px solid transparent; }
+    .review-nav button[aria-current="page"] { border-block-end-color:var(--action); }
+    [data-direction="cadencia"] .review-nav { gap:.22rem; background:var(--panel); border-radius:21px; padding-inline:.35rem; }
+    [data-direction="cadencia"] .review-nav button { padding-inline:.55rem; }
+    [data-direction="cadencia"] .review-nav .review-train-tab { min-height:41px; flex-basis:auto; margin:4px 3px; font-size:.86rem; box-shadow:none; }
+    .review-nav button svg { width:17px; height:17px; }
+    .home-index { grid-template-columns:1fr .8fr; gap:2.2rem; }
+    [data-direction="arranque"] .review-launch { min-height:345px; }
+    [data-direction="arranque"] .training-week { display:grid; grid-template-columns:.7fr 1.55fr .8fr; align-items:center; gap:1.15rem; }
+    [data-direction="arranque"] .training-week > header { display:grid; gap:.2rem; }
+    [data-direction="caderno"] .home-lead { grid-template-columns:1.35fr 1fr; gap:2.7rem; align-items:end; }
+    [data-direction="caderno"] .training-week { border-inline-start:1px solid var(--line); padding-inline-start:1.2rem; }
+    [data-direction="cadencia"] .home-lead { grid-template-columns:1.45fr 1fr; gap:1.45rem; }
+    [data-direction="cadencia"] .launch-session { min-height:219px; padding:1.65rem; }
+    [data-direction="cadencia"] .training-week { min-height:219px; align-content:center; display:grid; padding:1.2rem; }
+    .routine-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
+    [data-direction="caderno"] .routine-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:1.25rem 2.2rem; }
+    [data-direction="cadencia"] .routine-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    [data-direction="arranque"] .history-month { grid-template-columns:minmax(145px,1fr) minmax(0,3fr); gap:1.05rem; padding-top:.7rem; border-top:1px solid var(--line); }
+    [data-direction="cadencia"] .history-month ol { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.45rem; }
+    [data-direction="arranque"] .progress-layout { grid-template-columns:minmax(0,1.5fr) minmax(0,.85fr); }
+    [data-direction="arranque"] .progress-week { grid-column:1 / -1; }
+    [data-direction="cadencia"] .progress-layout { grid-template-columns:minmax(0,1.45fr) minmax(0,1fr); gap:1.1rem; }
+    .app-shell[data-direction][data-session="true"] .main-content { padding-top:1.3rem; }
+    .app-shell[data-direction] .workout-dock { bottom:0; padding-block:.6rem; }
+    [data-direction="caderno"] .design-workout-body { max-width:820px; }
+    [data-direction="cadencia"] .design-workout-body { display:grid; grid-template-columns:minmax(210px,.8fr) minmax(0,2fr); gap:1.2rem; align-items:start; }
+    [data-direction="cadencia"] .exercise-sequence ol { display:grid; overflow:visible; }
+    [data-direction="cadencia"] .exercise-sequence button { width:100%; padding-inline:.55rem; }
+    [data-direction="cadencia"] .sequence-name { flex:1; }
+    [data-direction="cadencia"] .sequence-arrow { display:block; }
+    [data-direction="cadencia"] .workout-dock { grid-template-columns:minmax(0,1fr) auto; align-items:center; }
+    [data-direction="cadencia"] .workout-dock .add-exercise { grid-column:2; }
+  }
+  @media (min-width:521px) {
+    .app-shell[data-direction] .set-grid { grid-template-columns:52px minmax(82px,1.45fr) minmax(58px,1fr) minmax(46px,.66fr) minmax(45px,.58fr) 49px; }
+  }
+  @media (max-width:520px) {
+    .app-shell[data-direction] .set-grid { grid-template-columns:44px minmax(0,1.2fr) minmax(0,.82fr) minmax(0,.74fr) 47px; }
+    .app-shell[data-direction] .set-row .previous-value { color:var(--muted); }
+    .app-shell[data-direction] .set-row .previous-value > span { color:var(--text); }
+    [data-direction="caderno"] .previous-value:not(.muted) { font-style:italic; }
+    [data-direction="cadencia"] .exercise-sequence h2 { margin-block:.1rem .3rem; }
+  }
+  @media (max-width:360px) {
+    [data-direction="cadencia"] .review-nav .review-train-tab { flex-basis:46px; }
+    .review-nav button { font-size:.69rem; }
+    .app-shell[data-direction] .set-grid { grid-template-columns:40px minmax(0,1.2fr) minmax(0,.82fr) minmax(0,.73fr) 44px; gap:.23rem; }
+    .workout-head-actions .save-status { font-size:.67rem; }
+  }
+}
