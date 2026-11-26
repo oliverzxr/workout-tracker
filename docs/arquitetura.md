@@ -9,7 +9,7 @@ A aplicação roda no navegador com React, TypeScript e Vite. A composição em 
 | `src/app` | Navegação, estado de aplicação, política de gravação, registro do service worker e mensagens em português brasileiro. |
 | `src/ui` | Telas, formulários, tabela de séries, cronômetro e gráfico. |
 
-O catálogo inicial tem 34 exercícios cadastrados manualmente com nomes convencionais, grupo muscular principal, equipamento e descanso sugerido. Textos da interface, nomes de grupos e formatação estão em `src/app/pt-BR.ts`. Identificadores estáveis do catálogo e categorias internas independem dos rótulos traduzidos. O nome e a sigla públicos são declarados no mesmo módulo. Ícones de instalação e metadados do HTML acompanham mudanças de marca. As fontes Inter e Barlow Semi Condensed são distribuídas via Fontsource sob SIL Open Font License e servidas pelo próprio app.
+O catálogo inicial tem 34 exercícios cadastrados manualmente com nomes convencionais, grupo muscular principal, equipamento e descanso sugerido. Textos da interface, nomes de grupos e formatação estão em `src/app/pt-BR.ts`. Identificadores estáveis do catálogo e categorias internas independem dos rótulos traduzidos. O nome e a sigla públicos são declarados no mesmo módulo. Ícones de instalação e metadados do HTML acompanham mudanças de marca. A fonte Inter é distribuída via Fontsource sob SIL Open Font License e servida pelo próprio app. A composição visual e a evolução planejada estão descritas no [sistema visual](sistema-visual.md) e no [roadmap](roadmap.md).
 
 ## Dados e gravação
 
