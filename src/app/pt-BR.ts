@@ -27,22 +27,22 @@ export const t = {
   home: {
     heading: 'Área de treino', description: 'Registre suas séries e retome de onde parou.',
     start: 'Iniciar treino livre', resume: 'Retomar treino', free: 'Treino livre',
-    week: 'Esta semana', sessions: 'Treinos', quick: 'Suas rotinas', allRoutines: 'Ver rotinas',
+    week: 'Esta semana', dailySets: 'Séries válidas por dia', sessions: 'Treinos', quick: 'Suas rotinas', allRoutines: 'Ver rotinas',
     noRoutines: 'Crie uma rotina para começar com seus exercícios e séries planejados.',
     createRoutine: 'Criar rotina', recent: 'Último treino', seeHistory: 'Ver histórico',
     noRecent: 'Seu primeiro treino aparecerá aqui.', startRoutine: 'Iniciar rotina',
     openRoutine: 'Escolher rotina', draftHint: 'Continue da última série registrada.',
-    preferred: 'Escolha a carga e registre suas séries conforme treina.',
+    pendingSet: 'série pendente', pendingSets: 'séries pendentes',
     trainingDay: 'Treino registrado', restDay: 'Sem treino registrado',
     weekEmpty: 'Os dias de treino serão marcados aqui após a primeira sessão.',
   },
   catalog: {
     heading: 'Catálogo de exercícios', subtitle: 'Encontre movimentos por nome, músculo ou equipamento.',
-    search: 'Buscar exercício', new: 'Novo exercício', edit: 'Editar exercício', archive: 'Arquivar',
+    search: 'Buscar exercício', new: 'Novo exercício', newShort: 'Novo', edit: 'Editar exercício', archive: 'Arquivar',
     restore: 'Reativar', showArchived: 'Mostrar arquivados', archived: 'Arquivado', pick: 'Adicionar exercício',
     empty: 'Tente outro nome ou ajuste os filtros.',
     result: 'Resultado', results: 'Resultados', clear: 'Limpar filtros', noGear: 'Qualquer equipamento',
-    execution: 'Execução', visual: 'Demonstração do movimento', start: 'Posição inicial', end: 'Posição final',
+    execution: 'Execução', referenceFrames: 'Quadros de execução', start: 'Posição inicial', end: 'Posição final',
     credits: 'Créditos das ilustrações', adaptations: 'Redimensionadas e convertidas para WebP.', unavailable: 'Ilustração indisponível para este exercício.',
     primary: 'Músculos primários', secondary: 'Músculos secundários', noSecondary: 'Nenhum grupo secundário destacado.',
     missingGuide: 'Exercício personalizado. O histórico e os recordes são calculados a partir dos seus treinos.',
@@ -75,7 +75,7 @@ export const t = {
     jump: 'Ir para exercício', completedSets: 'Séries concluídas',
   },
   history: {
-    heading: 'Histórico', description: 'Consulte os detalhes e edite treinos finalizados.', details: 'Ver treino',
+    heading: 'Histórico', session: 'Treino', description: 'Consulte os detalhes e edite treinos finalizados.', details: 'Ver treino',
     remove: 'Excluir treino', confirm: 'Excluir este treino do histórico?',
     emptyDetail: 'Os treinos finalizados aparecem aqui com as séries, cargas e repetições.',
   },
@@ -115,6 +115,7 @@ export const formatInputLoad = (grams: number) => inputNumber.format(grams / 100
 const dateFormat = new Intl.DateTimeFormat(locale, { day: '2-digit', month: 'short' });
 const longDateFormat = new Intl.DateTimeFormat(locale, { dateStyle: 'long', timeStyle: 'short' });
 export const shortDate = (value: string | Date) => dateFormat.format(new Date(value));
+export const shortDateRange = (start: Date, end: Date) => dateFormat.formatRange(start, end);
 export const longDate = (value: string) => longDateFormat.format(new Date(value));
 export const countLabel = (value: number, singular: string, plural: string) =>
   formatNumber(value) + ' ' + (value === 1 ? singular : plural).toLocaleLowerCase(locale);

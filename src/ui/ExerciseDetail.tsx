@@ -1,4 +1,5 @@
-import { Activity, ArrowLeft, ChevronRight } from 'lucide-react';
+import { useState } from 'react';
+import { ArrowLeft, ChevronRight, Images } from 'lucide-react';
 import { countLabel, formatNumber, longDate, t } from '../app/pt-BR';
 import { exerciseGuide } from '../catalog/guides';
 import { exerciseMedia, illustrationLicense, mediaUrl } from '../catalog/media';
@@ -10,10 +11,12 @@ import { ExerciseProgress } from './ExerciseProgress';
 import { Empty, Title } from './primitives';
 
 function Demonstration({ exercise }: { exercise: Exercise }) {
+  const [open, setOpen] = useState(false);
   const media = exerciseMedia(exercise.id);
-  return <section className="section exercise-visual" aria-labelledby="exercise-visual-title">
-    <div className="section-head"><h2 id="exercise-visual-title">{t.catalog.visual}</h2></div>
-    {media ? <>
+  if (!media) return <p className="movement-unavailable">{t.catalog.unavailable}</p>;
+  return <details className="movement-disclosure" onToggle={event => setOpen(event.currentTarget.open)}>
+    <summary><Images size={17} aria-hidden="true" />{t.catalog.referenceFrames}<ChevronRight size={16} aria-hidden="true" /></summary>
+    {open && <>
       <div className="movement-frames">
         <figure><ExerciseImage src={mediaUrl(media.key, 'start')} alt={exercise.name + ' · ' + t.catalog.start} /><figcaption>{t.catalog.start}</figcaption></figure>
         <figure><ExerciseImage src={mediaUrl(media.key, 'end')} alt={exercise.name + ' · ' + t.catalog.end} /><figcaption>{t.catalog.end}</figcaption></figure>
@@ -23,9 +26,10 @@ function Demonstration({ exercise }: { exercise: Exercise }) {
         <p>{illustrationLicense.author} · <a href={illustrationLicense.url}>{illustrationLicense.name}</a> · {t.catalog.adaptations}</p>
         <ul>{media.frames.map(frame => <li key={frame.source}><a href={frame.source}>{frame.file}</a></li>)}</ul>
       </details>
-    </> : <div className="movement-fallback panel"><ExerciseImage alt="" /><p>{t.catalog.unavailable}</p></div>}
-  </section>;
+    </>}
+  </details>;
 }
+
 
 function ExerciseHistory({ exerciseId, workouts, showWorkout }: { exerciseId: string; workouts: Workout[]; showWorkout: (workout: Workout) => void }) {
   const entries = [...workouts].sort((a, b) => b.startedAt.localeCompare(a.startedAt)).flatMap(workout => {
@@ -57,8 +61,7 @@ export function ExerciseDetail({ exercise, workouts, close, showWorkout }: {
   return <>
     <div className="editor-top"><button type="button" className="text-button" onClick={close}><ArrowLeft size={17} aria-hidden="true" />{t.catalog.heading}</button></div>
     <Title heading={exercise.name} subtitle={t.muscles[exercise.muscle] + ' · ' + t.equipment[exercise.equipment]} />
-    <div className="exercise-guide-layout">
-      <Demonstration exercise={exercise} />
+    <div className="exercise-detail-layout">
       <section className="section exercise-technique">
         <div className="section-head"><h2>{t.catalog.execution}</h2></div>
         <dl>
@@ -66,13 +69,14 @@ export function ExerciseDetail({ exercise, workouts, close, showWorkout }: {
           <div><dt>{t.catalog.secondary}</dt><dd>{guide?.secondary ?? (secondary.length ? secondary.map(muscle => t.muscles[muscle]).join(', ') : t.catalog.noSecondary)}</dd></div>
         </dl>
         {guide ? <ol className="technique-steps">{guide.steps.map(step => <li key={step}>{step}</li>)}</ol> : <p className="muted">{t.catalog.missingGuide}</p>}
+        <Demonstration exercise={exercise} />
       </section>
-    </div>
-    <div className="exercise-performance-layout">
-      <section className="section"><div className="section-head"><h2><Activity size={19} aria-hidden="true" />{t.progress.progression}</h2></div>
-        <ExerciseProgress points={progression(workouts, exercise.id)} />
-      </section>
-      <ExerciseHistory exerciseId={exercise.id} workouts={workouts} showWorkout={showWorkout} />
+      <div className="exercise-performance">
+        <section className="section"><div className="section-head"><h2>{t.progress.progression}</h2></div>
+          <ExerciseProgress points={progression(workouts, exercise.id)} />
+        </section>
+        <ExerciseHistory exerciseId={exercise.id} workouts={workouts} showWorkout={showWorkout} />
+      </div>
     </div>
   </>;
 }

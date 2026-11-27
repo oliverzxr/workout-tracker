@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { Download, HardDrive, Smartphone, Upload } from 'lucide-react';
+import { Download, Upload } from 'lucide-react';
 import { t } from '../app/pt-BR';
 import { download, exportBackup, exportCsv, importBackup } from '../data/export';
 import type { Snapshot } from '../domain/model';
@@ -30,36 +30,38 @@ export function Settings({ data, save, install, installed, offline, demo }: {
 
   if (demo) return <>
     <Title heading={t.settings.heading} subtitle={t.shell.demo} />
-    <section className="panel settings-panel">
-      <h2><HardDrive size={21} aria-hidden="true" />{t.settings.local}</h2>
+    <section className="settings-panel">
+      <h2>{t.settings.local}</h2>
       <p>{t.shell.demoNote}</p>
     </section>
   </>;
 
   return <>
-    <Title heading={t.settings.heading} subtitle={t.settings.description} />
-    <section className="panel settings-panel">
-      <h2><HardDrive size={21} />{t.settings.local}</h2>
-      <p>{t.settings.warning}</p>
-      <div className="settings-actions">
-        <button className="button primary" onClick={() => download(exportBackup(data), 'workout-tracker-backup.json', 'application/json')}><Download size={17} />{t.settings.backup}</button>
-        <button className="button secondary" onClick={() => download(exportCsv(data.workouts, t.settings.csvHeaders, t.kinds), 'workout-tracker-historico.csv', 'text/csv;charset=utf-8')}><Download size={17} />{t.settings.csv}</button>
-        <button className="button secondary" onClick={() => file.current?.click()}><Upload size={17} />{t.settings.restore}</button>
-        <input ref={file} aria-label={t.settings.restore} type="file" accept=".json,application/json" hidden onChange={event => {
-          const input = event.currentTarget;
-          const selected = input.files?.[0];
-          input.value = '';
-          if (selected) void restore(selected);
-        }} />
-      </div>
-      {message && <p className={error ? 'error' : 'success'} role={error ? 'alert' : 'status'}>{message}</p>}
-    </section>
-    <section className="panel settings-panel">
-      <h2><Smartphone size={21} />{t.settings.installation}</h2>
-      {installed ? <p>{t.settings.installed}</p> : <p>{t.settings.ios}</p>}
-      {install && !installed && <button className="button primary" onClick={install}>{t.settings.install}</button>}
-      <p>{t.settings.offline}</p>
-      {offline && <span className="offline-label"><span />{t.settings.ready}</span>}
-    </section>
+    <Title heading={t.settings.heading} />
+    <div className="settings-layout">
+      <section className="settings-panel">
+        <h2>{t.settings.local}</h2>
+        <p>{t.settings.warning}</p>
+        <div className="settings-actions list">
+          <button className="list-row clickable" onClick={() => download(exportBackup(data), 'workout-tracker-backup.json', 'application/json')}><Download size={17} /><span className="row-content"><strong>{t.settings.backup}</strong></span></button>
+          <button className="list-row clickable" onClick={() => download(exportCsv(data.workouts, t.settings.csvHeaders, t.kinds), 'workout-tracker-historico.csv', 'text/csv;charset=utf-8')}><Download size={17} /><span className="row-content"><strong>{t.settings.csv}</strong></span></button>
+          <button className="list-row clickable" onClick={() => file.current?.click()}><Upload size={17} /><span className="row-content"><strong>{t.settings.restore}</strong></span></button>
+          <input ref={file} aria-label={t.settings.restore} type="file" accept=".json,application/json" hidden onChange={event => {
+            const input = event.currentTarget;
+            const selected = input.files?.[0];
+            input.value = '';
+            if (selected) void restore(selected);
+          }} />
+        </div>
+        {message && <p className={error ? 'error' : 'success'} role={error ? 'alert' : 'status'}>{message}</p>}
+      </section>
+      <section className="settings-panel">
+        <h2>{t.settings.installation}</h2>
+        {installed ? <p>{t.settings.installed}</p> : <p>{t.settings.ios}</p>}
+        {install && !installed && <button className="button primary" onClick={install}>{t.settings.install}</button>}
+        <p>{t.settings.offline}</p>
+        {offline && <span className="offline-label"><span />{t.settings.ready}</span>}
+      </section>
+    </div>
   </>;
 }

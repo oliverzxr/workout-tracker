@@ -1,5 +1,5 @@
 import { ArrowLeft, ChevronRight, Pencil, Trash2 } from 'lucide-react';
-import { formatNumber, locale, longDate, t } from '../app/pt-BR';
+import { countLabel, formatNumber, locale, longDate, t } from '../app/pt-BR';
 import type { Workout } from '../domain/model';
 import { totals } from '../domain/stats';
 import { Empty, Title } from './primitives';
@@ -13,9 +13,9 @@ export function History({ workouts, detail }: { workouts: Workout[]; detail: (va
     else months.set(month, [workout]);
   }
   return <>
-    <Title heading={t.history.heading} subtitle={t.history.description} />
+    <Title heading={t.history.heading} />
     {months.size ? [...months].map(([month, entries]) => <section className="history-group" key={month}>
-      <h2>{month.charAt(0).toLocaleUpperCase(locale) + month.slice(1)}</h2>
+      <header className="history-month"><h2>{month.charAt(0).toLocaleUpperCase(locale) + month.slice(1)}</h2><span>{countLabel(entries.length, t.home.free.split(' ')[0]!, t.home.sessions)}</span></header>
       <div className="list">{entries.map(workout => {
         const start = new Date(workout.startedAt);
         const duration = Math.round((Date.parse(workout.finishedAt) - +start) / 60_000);

@@ -36,12 +36,14 @@ test('catálogo, busca brasileira, demonstração, créditos e histórico indivi
   await page.getByRole('combobox', { name: 'Equipamento' }).selectOption('barbell');
   await bench.click();
   await expect(page.getByRole('heading', { name: 'Supino reto' })).toBeVisible();
+  await inspect(page, 'detalhe', info.project.name + '-exercicio');
+  await page.getByText('Quadros de execução', { exact: true }).click();
   await loaded(page.getByRole('img', { name: /Posição inicial/ }));
   await loaded(page.getByRole('img', { name: /Posição final/ }));
   await expect(page.getByText('62,5', { exact: false }).first()).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Histórico do exercício' })).toBeVisible();
   await expect(page.getByText('Peitoral maior', { exact: true })).toBeVisible();
-  await inspect(page, 'detalhe', info.project.name + '-exercicio');
+  await inspect(page, 'detalhe com quadros abertos');
   if (info.project.name === 'mobile' && process.env.CAPTURE_RC) {
     await page.getByRole('heading', { name: 'Evolução por exercício' }).evaluate(element => element.scrollIntoView());
     await page.screenshot({ path: 'docs/screenshots/rc/mobile-exercicio-progresso.png', scale: 'css', animations: 'disabled' });
@@ -66,6 +68,7 @@ test('reabre quadros e detalhes offline e mantém o seletor de treino sem imagen
   await page.reload();
   await expect(page.getByText('Sem conexão')).toBeVisible();
   await page.evaluate(hash => { location.hash = hash; }, benchDetail);
+  await page.getByText('Quadros de execução', { exact: true }).click();
   await loaded(page.getByRole('img', { name: /Posição inicial/ }));
   await loaded(page.getByRole('img', { name: /Posição final/ }));
   await page.evaluate(() => { location.hash = '#/exercicio/catalog%3Acable-kickback'; });

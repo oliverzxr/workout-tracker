@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ArrowDown, ArrowLeft, ArrowUp, Check, Clock3, Copy, Ellipsis, Plus, RotateCcw, Trash2, X } from 'lucide-react';
+import { ArrowDown, ArrowLeft, ArrowUp, Check, Clock3, Copy, Ellipsis, Pencil, Plus, RotateCcw, Trash2, X } from 'lucide-react';
 import { formatInputLoad, formatNumber, t } from '../app/pt-BR';
 import { emptySet, move, parseSet, remaining, workoutExercise } from '../domain/model';
 import type { Draft, DraftExercise, DraftSet, Exercise, SavedSet, Workout } from '../domain/model';
@@ -21,7 +21,7 @@ function Timer({ timer, update }: { timer: NonNullable<Draft['timer']>; update: 
   const seconds = remaining(timer.endAt, now);
   const clock = String(Math.floor(seconds / 60)).padStart(2, '0') + ':' + String(seconds % 60).padStart(2, '0');
   return <aside className="timer" aria-label={t.active.rest}>
-    <span className="timer-icon"><Clock3 size={20} /></span>
+
     <span className="timer-time" role="timer" aria-label={t.active.rest}>{clock}</span>
     <div className="timer-name"><strong aria-live="polite">{seconds ? t.active.rest : t.active.timerComplete}</strong><small>{timer.exercise}</small></div>
     <button className="button secondary timer-extra" aria-label={t.active.addTime} onClick={() => update(Math.max(Date.now(), timer.endAt) + 15000)}>+15 s</button>
@@ -48,6 +48,11 @@ function ExerciseEntry({ entry, previous, change, menu }: {
     change(row => ({ ...row, sets: row.sets.map(set => set.id === id ? { ...set, ...patch } : set) }));
   };
   const next = entry.sets.findIndex(set => !set.completed);
+  const earlierSets = {
+    warmup: previous?.sets.filter(set => set.kind === 'warmup') ?? [],
+    work: previous?.sets.filter(set => set.kind === 'work') ?? [],
+  };
+  const sequence = { warmup: 0, work: 0 };
   return <section id={'movimento-' + entry.id} tabIndex={-1} className="exercise-entry" aria-label={entry.name}>
     <header className="exercise-head">
       <div><h2>{entry.name}</h2><p>{t.muscles[entry.muscle]} <span>·</span> {t.active.rest} {entry.rest ? entry.rest + ' s' : t.active.noRest}</p></div>
@@ -55,9 +60,7 @@ function ExerciseEntry({ entry, previous, change, menu }: {
     </header>
     <div className="set-grid set-head" aria-hidden="true"><span>{t.active.series}</span><span>{t.active.previous}</span><span>{t.active.load} (kg)</span><span>{t.common.reps}</span><span>{t.common.rir}</span><span /></div>
     {entry.sets.map((set, index) => {
-      const sequence = entry.sets.slice(0, index).filter(item => item.kind === set.kind).length;
-      const lastSets = previous?.sets.filter(item => item.kind === set.kind);
-      const last = lastSets?.[sequence];
+      const last = earlierSets[set.kind][sequence[set.kind]++];
       const label = ' ' + t.active.series.toLocaleLowerCase() + ' ' + (index + 1);
       const helpId = invalid === set.id ? 'erro-serie-' + set.id : undefined;
       return <div className={'set-grid set-row' + (set.completed ? ' completed' : '')} data-next={index === next ? true : undefined} key={set.id}>
@@ -134,47 +137,51 @@ export function WorkoutEditor({ value, change, exercises, workouts, close, finis
   const completed = value.exercises.reduce((count, item) => count + item.sets.filter(set => set.completed).length, 0);
   const planned = value.exercises.reduce((count, item) => count + item.sets.length, 0);
   return <>
-    <header className="session-heading">
-      <div className="editor-top"><button className="text-button" onClick={close}><ArrowLeft size={18} aria-hidden="true" />{editing ? t.common.cancel : t.nav.home}</button><span className="save-status">{saveStatus}</span></div>
-      <Title heading={editing ? t.active.editHeading : t.active.heading} />
-      <label className="session-name">{t.active.name}<input value={value.name} maxLength={80} onChange={event => { const name = event.target.value; change(current => ({ ...current, name })); }} /></label>
-      {planned > 0 && <div className="session-progress">
-        <span>{t.active.completedSets}</span><progress value={completed} max={planned} aria-label={t.active.completedSets} /><strong>{completed}/{planned}</strong>
-      </div>}
-    </header>
-    {value.exercises.length > 1 && <nav className="session-sequence" aria-label={t.active.jump}>
-      {value.exercises.map((item, index) => <button key={item.id} type="button" onClick={() => {
-        const exercise = document.getElementById('movimento-' + item.id);
-        exercise?.focus({ preventScroll: true });
-        exercise?.scrollIntoView({ block: 'start' });
-      }}>
-        <span>{index + 1}</span>{item.name}
-      </button>)}
-    </nav>}
-    <div className="workout-exercises">
-      {value.exercises.length === 0 && <Empty title={t.active.empty} />}
-      {value.exercises.map(entry => <ExerciseEntry key={entry.id} entry={entry}
-        previous={earlier.map(item => item.exercises.find(row => row.exerciseId === entry.exerciseId)).find(Boolean)}
-        change={apply => change(current => {
-          const previous = current.exercises.find(row => row.id === entry.id);
-          if (!previous) return current;
-          const next = apply(previous);
-          const start = !editing && next.rest > 0 && next.sets.some(set => set.completed && previous.sets.some(old => old.id === set.id && !old.completed));
-          const timer = start ? { endAt: Date.now() + next.rest * 1000, duration: next.rest, exercise: next.name } : current.timer;
-          return { ...current, timer, exercises: current.exercises.map(row => row.id === entry.id ? next : row) };
-        })}
-        menu={setId => setMenu({ exerciseId: entry.id, setId })} />)}
-    </div>
-    <div className="workout-actions">
-      <p className="muted rir-help">{t.active.rirHelp}</p>
-      {error && <p className="error" role="alert">{error}</p>}
-      {discard && <button className="text-button danger" onClick={discard}><RotateCcw size={16} />{t.active.discard}</button>}
-    </div>
-    <div className="workout-dock">
-      {!editing && value.timer && <Timer timer={value.timer} update={endAt => change(current => ({ ...current, timer: endAt === null || !current.timer ? null : { ...current.timer, endAt } }))} />}
-      <div className="dock-actions">
-        <button className="button secondary" onClick={() => setPicker(true)}><Plus size={18} aria-hidden="true" />{t.catalog.pick}</button>
-        <button className="button primary finish-button" onClick={finish}><Check size={18} aria-hidden="true" />{editing ? t.common.save : t.active.finish}</button>
+    <div className="editor-layout">
+      <div className="editor-log">
+        <header className="session-heading">
+          <div className="editor-top"><button className="text-button" onClick={close}><ArrowLeft size={18} aria-hidden="true" />{editing ? t.common.cancel : t.nav.home}</button><span className="save-status">{saveStatus}</span></div>
+          <Title heading={editing ? t.active.editHeading : t.active.heading} />
+          <label className="session-name"><span className="sr-only">{t.active.name}</span><input value={value.name} maxLength={80} onChange={event => { const name = event.target.value; change(current => ({ ...current, name })); }} /><Pencil size={15} aria-hidden="true" /></label>
+          {planned > 0 && <div className="session-progress">
+            <span>{t.active.completedSets}</span><progress value={completed} max={planned} aria-label={t.active.completedSets} /><strong>{completed}/{planned}</strong>
+          </div>}
+        </header>
+        {value.exercises.length > 1 && <nav className="session-sequence" aria-label={t.active.jump}>
+          {value.exercises.map((item, index) => <button key={item.id} type="button" onClick={() => {
+            const exercise = document.getElementById('movimento-' + item.id);
+            exercise?.focus({ preventScroll: true });
+            exercise?.scrollIntoView({ block: 'start' });
+          }}>
+            <span>{index + 1}</span>{item.name}
+          </button>)}
+        </nav>}
+        <div className="workout-exercises">
+          {value.exercises.length === 0 && <Empty title={t.active.empty} />}
+          {value.exercises.map(entry => <ExerciseEntry key={entry.id} entry={entry}
+            previous={earlier.map(item => item.exercises.find(row => row.exerciseId === entry.exerciseId)).find(Boolean)}
+            change={apply => change(current => {
+              const previous = current.exercises.find(row => row.id === entry.id);
+              if (!previous) return current;
+              const next = apply(previous);
+              const start = !editing && next.rest > 0 && next.sets.some(set => set.completed && previous.sets.some(old => old.id === set.id && !old.completed));
+              const timer = start ? { endAt: Date.now() + next.rest * 1000, duration: next.rest, exercise: next.name } : current.timer;
+              return { ...current, timer, exercises: current.exercises.map(row => row.id === entry.id ? next : row) };
+            })}
+            menu={setId => setMenu({ exerciseId: entry.id, setId })} />)}
+        </div>
+        <div className="workout-actions">
+          <p className="muted rir-help">{t.active.rirHelp}</p>
+          {error && <p className="error" role="alert">{error}</p>}
+          {discard && <button className="text-button danger" onClick={discard}><RotateCcw size={16} />{t.active.discard}</button>}
+        </div>
+      </div>
+      <div className="workout-dock">
+        {!editing && value.timer && <Timer timer={value.timer} update={endAt => change(current => ({ ...current, timer: endAt === null || !current.timer ? null : { ...current.timer, endAt } }))} />}
+        <div className="dock-actions">
+          <button className="button secondary" onClick={() => setPicker(true)}><Plus size={18} aria-hidden="true" />{t.catalog.pick}</button>
+          <button className="button primary finish-button" onClick={finish}><Check size={18} aria-hidden="true" />{editing ? t.common.save : t.active.finish}</button>
+        </div>
       </div>
     </div>
     {picker && <ExercisePicker exercises={exercises} choose={item => { change(current => ({ ...current, exercises: [...current.exercises, workoutExercise(item)] })); setPicker(false); }} close={() => setPicker(false)} />}

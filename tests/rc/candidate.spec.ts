@@ -46,6 +46,10 @@ test('navegação, legibilidade e alvos de toque em telas preenchidas e vazias',
   const box = await complete.boundingBox();
   expect(box?.width).toBeGreaterThanOrEqual(44);
   expect(box?.height).toBeGreaterThanOrEqual(44);
+  const actionDock = await page.locator('.workout-dock').boundingBox();
+  expect(actionDock).not.toBeNull();
+  if (size === 'mobile') expect(box!.y + box!.height).toBeLessThan(actionDock!.y);
+  else expect(actionDock!.x).toBeGreaterThan(box!.x + box!.width);
   await page.getByRole('button', { name: 'Adicionar exercício' }).click();
   const picker = page.getByRole('dialog', { name: 'Adicionar exercício' });
   await expect(picker).toBeVisible();
@@ -135,6 +139,27 @@ test('PWA serve os ícones e mantém IndexedDB, backup e CSV consistentes offlin
   } finally {
     await restored.close();
   }
+});
+
+test('apresenta falha de armazenamento e permite tentar novamente', async ({ page }, info) => {
+  await page.addInitScript(() => {
+    const open = indexedDB.open.bind(indexedDB);
+    let first = true;
+    Object.defineProperty(indexedDB, 'open', { value: (...args: Parameters<IDBFactory['open']>) => {
+      if (first) {
+        first = false;
+        throw new DOMException('Falha simulada de armazenamento', 'SecurityError');
+      }
+      return open(...args);
+    } });
+  });
+  await page.goto(realApp);
+  await expect(page.getByRole('alert')).toContainText('O navegador não conseguiu salvar ou abrir os dados.');
+  await verifyA11y(page, 'falha de armazenamento');
+  await fit(page);
+  if (process.env.CAPTURE_RC) await capture(page, info.project.name, 'erro-armazenamento');
+  await page.getByRole('button', { name: 'Tentar novamente' }).click();
+  await expect(page.getByRole('heading', { name: 'Área de treino' })).toBeVisible();
 });
 
 async function capture(page: Page, size: string, screen: string) {

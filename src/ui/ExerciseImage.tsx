@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ScanLine } from 'lucide-react';
+import { Dumbbell } from 'lucide-react';
 
 export function ExerciseImage({ src, alt, thumbnail = false }: { src?: string; alt: string; thumbnail?: boolean }) {
   const [failedSrc, setFailedSrc] = useState<string>();
@@ -8,6 +8,6 @@ export function ExerciseImage({ src, alt, thumbnail = false }: { src?: string; a
     <img src={src} alt={alt} width={thumbnail ? 144 : 480} height={thumbnail ? 108 : 360}
       loading="lazy" decoding="async" onError={() => setFailedSrc(src)} />
   </span> : <span className={className + ' neutral'} role={alt ? 'img' : undefined} aria-label={alt || undefined}>
-    <ScanLine size={thumbnail ? 19 : 34} aria-hidden="true" />
+    <Dumbbell size={thumbnail ? 19 : 34} aria-hidden="true" />
   </span>;
 }

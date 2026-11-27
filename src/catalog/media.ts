@@ -1,13 +1,14 @@
 import media from './media.json';
 
 type FrameCredit = { file: string; source: string; pageRevision: number; sha1: string };
-export type ExerciseMedia = { key: string; frames: readonly FrameCredit[] };
+type FrameSet = { key: string; frames: readonly FrameCredit[] };
+export type ExerciseMedia = FrameSet & { kind: 'frames' };
 
-const index: Record<string, ExerciseMedia> = media;
+const index = new Map<string, ExerciseMedia>(Object.entries(media).map(([id, entry]) => [id, { ...entry, kind: 'frames' }]));
 export const illustrationLicense = { name: 'CC BY-SA 3.0', url: 'https://creativecommons.org/licenses/by-sa/3.0/', author: 'Everkinetic' };
 
 export function exerciseMedia(exerciseId: string): ExerciseMedia | undefined {
-  return Object.hasOwn(index, exerciseId) ? index[exerciseId] : undefined;
+  return index.get(exerciseId);
 }
 
 export function mediaUrl(key: string, frame: 'thumb' | 'start' | 'end') {

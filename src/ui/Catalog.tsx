@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Archive, ChevronRight, Dumbbell, Pencil, Plus, Search, Undo2 } from 'lucide-react';
+import { Archive, ChevronDown, ChevronRight, Dumbbell, Pencil, Plus, Search, Undo2 } from 'lucide-react';
 import { countLabel, t } from '../app/pt-BR';
 import { defaultCatalogFilters, searchExercises } from '../catalog/profiles';
 import type { CatalogFilters } from '../catalog/profiles';
@@ -21,14 +21,14 @@ function ExerciseList({ exercises, filters, changeFilters, actions }: {
   return <>
     <div className={'catalog-filters' + (choosing ? ' picker-filters' : '')}>
       <label className="search"><Search size={18} aria-hidden="true" /><input aria-label={t.catalog.search} placeholder={t.catalog.search} value={filters.query} onChange={event => changeFilters({ ...filters, query: event.target.value })} /></label>
-      <select aria-label={t.common.muscle} value={filters.muscle} onChange={event => changeFilters({ ...filters, muscle: event.target.value as Muscle | '' })}>
+      <label className="select-field"><select aria-label={t.common.muscle} value={filters.muscle} onChange={event => changeFilters({ ...filters, muscle: event.target.value as Muscle | '' })}>
         <option value="">{t.common.muscle}</option>
         {muscles.map(value => <option key={value} value={value}>{t.muscles[value]}</option>)}
-      </select>
-      <select aria-label={t.common.gear} value={filters.gear} onChange={event => changeFilters({ ...filters, gear: event.target.value as Equipment | '' })}>
-        <option value="">{t.catalog.noGear}</option>
+      </select><ChevronDown size={15} aria-hidden="true" /></label>
+      <label className="select-field"><select aria-label={t.common.gear} value={filters.gear} onChange={event => changeFilters({ ...filters, gear: event.target.value as Equipment | '' })}>
+        <option value="">{t.common.gear}</option>
         {equipment.map(value => <option key={value} value={value}>{t.equipment[value]}</option>)}
-      </select>
+      </select><ChevronDown size={15} aria-hidden="true" /></label>
     </div>
     {!choosing && <div className="catalog-controls">
       <label className="checkbox-line"><input type="checkbox" checked={filters.includeArchived} onChange={event => changeFilters({ ...filters, includeArchived: event.target.checked })} />{t.catalog.showArchived}</label>
@@ -86,7 +86,7 @@ export function Catalog({ exercises, save, details, filters, changeFilters }: {
 }) {
   const [form, setForm] = useState<Exercise | null | undefined>();
   return <>
-    <Title heading={t.catalog.heading} subtitle={t.catalog.subtitle} action={<button className="button primary" onClick={() => setForm(null)}><Plus size={17} />{t.catalog.new}</button>} />
+    <Title heading={t.catalog.heading} action={<button className="button primary" aria-label={t.catalog.new} onClick={() => setForm(null)}><Plus size={17} aria-hidden="true" />{t.catalog.newShort}</button>} />
     <ExerciseList exercises={exercises} filters={filters} changeFilters={changeFilters}
       actions={{ details, edit: setForm, archive: item => save({ ...item, archived: !item.archived }) }} />
     {form !== undefined && <ExerciseForm item={form} close={() => setForm(undefined)} save={item => { save(item); setForm(undefined); }} />}

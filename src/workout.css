@@ -1,0 +1,185 @@
+@layer screens {
+  .app-shell[data-session="open"] .main-content { max-width: var(--measure-editor); padding-top: calc(var(--safe-top) + .3rem); padding-bottom: calc(10rem + var(--safe-bottom)); }
+  .app-shell[data-session="open"] .app-header { display: none; }
+  .editor-log { min-width: 0; }
+  .session-heading { display: grid; gap: .1rem; margin-bottom: .48rem; }
+  .editor-top { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .34rem; }
+  .editor-top .text-button { min-height: var(--tap); padding-inline: 0 .45rem; }
+  .save-status { color: var(--quiet); font-size: .72rem; }
+  .session-heading .page-title { margin: 0; }
+  .session-heading .page-title h1 { color: var(--muted); font-size: .75rem; font-weight: 500; letter-spacing: 0; }
+  .session-name {
+    display: grid;
+    grid-template-columns: minmax(0,1fr) auto;
+    align-items: center;
+    gap: .38rem;
+    padding-inline-end: .34rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .session-name svg { color: var(--quiet); }
+  .session-name:focus-within svg { color: var(--accent); }
+  .session-name input {
+    padding: .24rem .15rem .29rem 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    font-size: clamp(1.4rem,5.4vw,1.84rem);
+    font-weight: 650;
+    letter-spacing: -.045em;
+  }
+  .session-name input:focus-visible { outline-offset: 0; }
+  .session-progress {
+    display: grid;
+    grid-template-columns: auto minmax(24px,1fr) auto;
+    align-items: center;
+    gap: .5rem;
+    margin-block: .4rem .2rem;
+    color: var(--muted);
+    font-size: .72rem;
+  }
+  .session-progress strong { color: var(--text); font-variant-numeric: tabular-nums; }
+  .session-progress progress { width: 100%; height: 3px; }
+  .session-sequence { display: flex; gap: .65rem; margin: 0 -.12rem .55rem; padding: 0 .12rem; overflow: auto; scrollbar-width: thin; }
+  .session-sequence button {
+    display: flex;
+    align-items: center;
+    gap: .35rem;
+    min-height: var(--tap);
+    padding: 0 .4rem;
+    border: 0;
+    border-radius: var(--radius-small);
+    background: transparent;
+    color: var(--muted);
+    white-space: nowrap;
+    font-size: .75rem;
+    font-weight: 550;
+  }
+  .session-sequence button span { color: var(--accent); font-size: .68rem; font-weight: 650; font-variant-numeric: tabular-nums; }
+  .session-sequence button:hover { background: var(--hover); color: var(--text); }
+  .session-sequence button:focus-visible { outline-offset: -2px; }
+  .workout-exercises { display: grid; gap: 1.15rem; }
+  .exercise-entry { min-width: 0; scroll-margin-top: .65rem; }
+  .exercise-entry:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .exercise-head {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    gap: .4rem;
+    padding: .33rem 0 .22rem;
+    border-top: 1px solid var(--line);
+  }
+  .exercise-head h2 { margin-top: .18rem; font-size: clamp(1.08rem,4vw,1.25rem); }
+  .exercise-head p { margin-top: .15rem; color: var(--muted); font-size: .73rem; }
+  .exercise-head p span { margin-inline: .12rem; }
+  .set-grid {
+    display: grid;
+    grid-template-columns: 44px minmax(0,1.28fr) minmax(0,.87fr) minmax(0,.72fr) 46px;
+    align-items: center;
+    gap: 0 .22rem;
+  }
+  .set-head { min-height: 24px; color: var(--muted); text-align: center; font-size: .69rem; }
+  .set-head > :nth-child(2) { display: none; }
+  .set-row { padding-block: .23rem; border-top: 1px solid var(--line); }
+  .set-row[data-next="true"] { border-top-color: var(--accent-line); }
+  .set-row input { padding-inline: .12rem; border-color: transparent; background: var(--field); text-align: center; font-size: 1rem; font-variant-numeric: tabular-nums; }
+  .set-row input:hover:not(:read-only) { border-color: var(--border); }
+  .set-row input:focus { scroll-margin-block: 2rem 10rem; }
+  .set-row.completed input { border-color: transparent; background: transparent; color: var(--muted); }
+  .set-kind, .check-set {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    min-width: 0;
+    height: var(--tap);
+    border: 1px solid transparent;
+    border-radius: var(--radius-small);
+    background: transparent;
+    color: var(--quiet);
+    font-size: .82rem;
+    font-weight: 650;
+    transition: background-color .13s, color .13s, transform .1s;
+  }
+  .set-kind:hover { background: var(--hover); color: var(--text); }
+  .set-kind.warmup { color: var(--warning); }
+  .check-set { background: var(--field); color: var(--quiet); }
+  .check-set:hover { background: var(--hover); color: var(--text); }
+  .completed .check-set { background: transparent; color: var(--accent); }
+  .set-row[data-next="true"] .check-set { background: var(--accent); color: var(--on-accent); }
+  .set-row[data-next="true"] .check-set:hover { background: var(--accent-pressed); }
+  .previous-value {
+    display: flex;
+    grid-column: 2 / -1;
+    grid-row: 2;
+    align-items: center;
+    gap: .3rem;
+    min-width: 0;
+    min-height: 20px;
+    color: var(--muted);
+    font-size: .71rem;
+    line-height: 1.23;
+    font-variant-numeric: tabular-nums;
+  }
+  .previous-value:not(.muted) { color: var(--text); }
+  .previous-value:not(.muted)::before { color: var(--quiet); content: attr(data-label); }
+  .previous-value small { color: var(--muted); font-size: .69rem; }
+  .previous-value .icon-button.tiny { min-width: var(--tap); min-height: 34px; margin-inline-start: auto; }
+  .set-error { grid-column: 1 / -1; padding: .25rem .3rem; background: var(--danger-surface); font-size: .8rem; }
+  .add-set { margin-top: .12rem; padding-inline-start: 0; }
+  .workout-actions { display: grid; justify-items: start; gap: .35rem; margin-top: .65rem; }
+  .rir-help { font-size: .75rem; }
+  .workout-dock {
+    position: fixed;
+    z-index: 6;
+    inset: auto 0 0;
+    display: grid;
+    gap: .36rem;
+    padding: .38rem max(16px,env(safe-area-inset-right)) calc(.42rem + var(--safe-bottom)) max(16px,env(safe-area-inset-left));
+    border-top: 1px solid var(--line);
+    background: var(--bg);
+  }
+  .dock-actions { display: grid; grid-template-columns: 1fr 1fr; gap: .42rem; }
+  .dock-actions button { min-height: 46px; padding-inline: .36rem; }
+  .dock-actions .finish-button { border-color: transparent; background: var(--accent-surface); color: var(--accent); }
+  .dock-actions .finish-button:hover { background: var(--accent); color: var(--on-accent); }
+  .timer {
+    display: grid;
+    grid-template-columns: auto minmax(0,1fr) auto auto;
+    align-items: center;
+    gap: 0 .46rem;
+    min-width: 0;
+    padding-inline: .45rem .16rem;
+    border-radius: var(--radius-small);
+    background: var(--well);
+  }
+  .timer-time { color: var(--accent); font-size: 1.38rem; font-weight: 650; line-height: 1; letter-spacing: -.045em; font-variant-numeric: tabular-nums; }
+  .timer-name { display: grid; min-width: 0; font-size: .72rem; }
+  .timer-name small { display: none; color: var(--muted); text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
+  .timer .timer-extra { min-width: var(--tap); padding-inline: .38rem; background: transparent; white-space: nowrap; }
+  .rest-progress { grid-column: 1 / -1; width: calc(100% + .15rem); height: 3px; }
+  @media (max-width: 360px) {
+    .set-grid { grid-template-columns: 44px minmax(0,1.2fr) minmax(0,.8fr) minmax(0,.68fr) 44px; }
+    .dock-actions .button { font-size: .75rem; }
+    .dock-actions .button svg { width: 15px; height: 15px; }
+  }
+  @media (min-width: 620px) {
+    .set-grid { grid-template-columns: 49px minmax(110px,1.45fr) minmax(55px,.8fr) minmax(45px,.66fr) minmax(45px,.55fr) 48px; gap: .45rem; }
+    .set-head > :nth-child(2) { display: initial; text-align: start; }
+    .previous-value { grid-column: auto; grid-row: auto; }
+    .previous-value:not(.muted)::before { content: none; }
+    .timer-name small { display: block; }
+  }
+  @media (min-width: 880px) {
+    .app-shell[data-session="open"] .main-content { padding: 1.2rem var(--space-5) 4rem; }
+    .editor-layout { display: grid; grid-template-columns: minmax(0,1fr) minmax(218px,.34fr); align-items: start; gap: 1.65rem; }
+    .session-heading { margin-bottom: .7rem; }
+    .workout-dock { position: sticky; inset: 1.4rem auto auto; padding: 0; border: 0; gap: .65rem; }
+    .dock-actions { grid-template-columns: 1fr; gap: .35rem; }
+    .dock-actions button { justify-content: start; padding-inline: .75rem; }
+    .timer { grid-template-columns: auto minmax(0,1fr) auto; padding: .57rem .55rem .15rem; }
+    .timer-time { grid-row: span 2; font-size: 1.68rem; }
+    .timer-name { grid-column: 2 / -1; }
+    .timer .timer-extra { grid-column: 2; justify-self: start; }
+    .timer .icon-button { grid-column: 3; }
+    .rest-progress { width: 100%; }
+  }
+}

@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
-import { Trophy } from 'lucide-react';
 import { formatNumber, longDate, shortDate, t } from '../app/pt-BR';
 import type { progression } from '../domain/stats';
 import { Empty } from './primitives';
@@ -23,8 +22,10 @@ function Chart({ points, metric }: { points: ReturnType<typeof progression>; met
   const right = width - 14;
   const bottom = 158;
   const top = 22;
+  const firstTime = Date.parse(points[0]!.date);
+  const elapsed = Date.parse(points.at(-1)!.date) - firstTime;
   const coords = points.map((point, index) => ({
-    x: points.length === 1 ? (left + right) / 2 : left + (right - left) * index / (points.length - 1),
+    x: points.length === 1 ? (left + right) / 2 : left + (right - left) * (elapsed ? (Date.parse(point.date) - firstTime) / elapsed : index / (points.length - 1)),
     y: bottom - (bottom - top) * point[metric] / highest,
   }));
   return <>
@@ -51,13 +52,13 @@ function Chart({ points, metric }: { points: ReturnType<typeof progression>; met
 export function ExerciseProgress({ points, children }: { points: ReturnType<typeof progression>; children?: ReactNode }) {
   const [metric, setMetric] = useState<'load' | 'volume'>('load');
   if (!points.length) return <Empty title={t.progress.noExercises} />;
-  return <div className="panel progress-panel">
+  return <div className="progress-panel">
     {children}
     <div className="records">
-      <div><span><Trophy size={16} />{t.progress.record}</span><strong>{formatNumber(Math.max(...points.map(point => point.load)))} <small>kg</small></strong></div>
-      <div><span><Trophy size={16} />{t.progress.volumeRecord}</span><strong>{formatNumber(Math.max(...points.map(point => point.volume)))} <small>kg</small></strong></div>
+      <div><span>{t.progress.record}</span><strong>{formatNumber(Math.max(...points.map(point => point.load)))} <small>kg</small></strong></div>
+      <div><span>{t.progress.volumeRecord}</span><strong>{formatNumber(Math.max(...points.map(point => point.volume)))} <small>kg</small></strong></div>
     </div>
-    <div className="split">
+    <div className="metric-switch">
       <button className="button secondary" aria-pressed={metric === 'load'} onClick={() => setMetric('load')}>{t.progress.load}</button>
       <button className="button secondary" aria-pressed={metric === 'volume'} onClick={() => setMetric('volume')}>{t.progress.volume}</button>
     </div>

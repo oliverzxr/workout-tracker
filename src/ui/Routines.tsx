@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Dumbbell, Pencil, Play, Plus, Trash2 } from 'lucide-react';
+import { ArrowUpRight, Dumbbell, Pencil, Play, Plus, Trash2 } from 'lucide-react';
 import { countLabel, t } from '../app/pt-BR';
 import { move, newId } from '../domain/model';
 import type { Exercise, Routine } from '../domain/model';
@@ -53,26 +53,29 @@ export function Routines({ routines, exercises, openNew, setOpenNew, save, remov
   const [editing, setEditing] = useState<Routine | null>(null);
   return <>
     <Title heading={t.routines.heading} action={<button className="button primary" onClick={() => setOpenNew(true)}><Plus size={17} aria-hidden="true" />{t.routines.create}</button>} />
-    <div className="section-head routine-toolbar">
-      <button className="button secondary" onClick={catalog}><Dumbbell size={17} aria-hidden="true" />{t.routines.catalog}</button>
-      {routines.length > 0 && <span className="muted">{countLabel(routines.length, 'Rotina', t.routines.heading)}</span>}
-    </div>
-    {routines.length ? <div className="list routine-plans">{routines.map(routine => <article className="routine-list" key={routine.id}>
-      <header className="routine-head">
-        <div className="row-content"><h2>{routine.name}</h2>
-          <small>{countLabel(routine.items.length, t.common.exercise, t.common.exercises)} · {countLabel(routine.items.reduce((total, item) => total + item.sets, 0), t.active.series, t.common.sets)}</small>
-        </div>
-        <button className="icon-button" aria-label={t.common.edit + ' ' + routine.name} onClick={() => setEditing(routine)}><Pencil size={17} aria-hidden="true" /></button>
-        <button className="icon-button" aria-label={t.routines.remove + ' ' + routine.name} onClick={() => { if (window.confirm(t.routines.confirm)) remove(routine); }}><Trash2 size={17} aria-hidden="true" /></button>
-      </header>
-      <div className="routine-foot">
-        <details className="routine-preview"><summary>{t.routines.preview}</summary>
-          <ol>{routine.items.map(item => <li key={item.id}><span>{exercises.find(exercise => exercise.id === item.exerciseId)?.name ?? t.common.exercise}</span>
-            <small> {countLabel(item.sets, t.active.series, t.common.sets)}</small></li>)}</ol>
-        </details>
-        <button className="button secondary" onClick={() => start(routine)}><Play size={15} aria-hidden="true" />{t.routines.start}</button>
+    <div className="routine-layout">
+      <div>
+        {routines.length ? <div className="list routine-plans">{routines.map(routine => <article className="routine-list" key={routine.id}>
+          <header className="routine-head">
+            <div className="row-content"><h2>{routine.name}</h2>
+              <small>{countLabel(routine.items.length, t.common.exercise, t.common.exercises)} · {countLabel(routine.items.reduce((total, item) => total + item.sets, 0), t.active.series, t.common.sets)}</small>
+            </div>
+            <button className="icon-button" aria-label={t.common.edit + ' ' + routine.name} onClick={() => setEditing(routine)}><Pencil size={17} aria-hidden="true" /></button>
+            <button className="icon-button" aria-label={t.routines.remove + ' ' + routine.name} onClick={() => { if (window.confirm(t.routines.confirm)) remove(routine); }}><Trash2 size={17} aria-hidden="true" /></button>
+          </header>
+          <div className="routine-foot">
+            <details className="routine-preview"><summary>{t.routines.preview}</summary>
+              <ol>{routine.items.map(item => <li key={item.id}><span>{exercises.find(exercise => exercise.id === item.exerciseId)?.name ?? t.common.exercise}</span>
+                <small> {countLabel(item.sets, t.active.series, t.common.sets)}</small></li>)}</ol>
+            </details>
+            <button className="button secondary" onClick={() => start(routine)}><Play size={15} aria-hidden="true" />{t.routines.start}</button>
+          </div>
+        </article>)}</div> : <Empty title={t.routines.empty} detail={t.home.noRoutines} />}
       </div>
-    </article>)}</div> : <Empty title={t.routines.empty} detail={t.home.noRoutines} />}
+      <button className="list-row clickable routine-catalog" onClick={catalog}>
+        <Dumbbell size={19} aria-hidden="true" /><span className="row-content"><strong>{t.routines.catalog}</strong><small>{countLabel(exercises.filter(item => !item.archived).length, t.common.exercise, t.common.exercises)}</small></span><ArrowUpRight size={16} aria-hidden="true" />
+      </button>
+    </div>
     {(openNew || editing) && <RoutineForm routine={editing} exercises={exercises} close={() => { setOpenNew(false); setEditing(null); }} save={item => {
       save(item); setOpenNew(false); setEditing(null);
     }} />}

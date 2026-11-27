@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
-import { Activity, ArrowLeft, Dumbbell, History as HistoryIcon, House, Layers3, Settings as Gear, WifiOff } from 'lucide-react';
+import { Activity, ArrowLeft, History as HistoryIcon, House, Layers3, Settings as Gear, WifiOff } from 'lucide-react';
 import { brand, formatInputLoad, t } from './pt-BR';
 import { usePwa } from './usePwa';
 import { useTracker } from './useTracker';
@@ -167,7 +167,7 @@ export function App({ repository, demo = false }: { repository: TrackerRepositor
     else if (route.page === 'exercicio') {
       const exercise = data.exercises.find(item => item.id === route.id);
       const close = () => navigate('exercicios');
-      page = exercise ? <Suspense fallback={<p role="status" className="muted">{t.storage.loading}</p>}>
+      page = exercise ? <Suspense fallback={<p role="status" className="loading-state">{t.storage.loading}</p>}>
         <ExerciseDetail key={exercise.id} exercise={exercise} workouts={data.workouts} close={close} showWorkout={showWorkout} />
       </Suspense> : <Empty title={t.catalog.missing} action={<button className="button secondary" onClick={close}>{t.catalog.heading}</button>} />;
     }
@@ -195,12 +195,12 @@ export function App({ repository, demo = false }: { repository: TrackerRepositor
       create={showNewRoutine} history={() => navigate('historico')} detail={showWorkout} />;
   }
 
-  return <div className="app-shell" data-session={sessionOpen ? 'open' : undefined}>
+  return <div className="app-shell" data-session={sessionOpen ? 'open' : undefined} data-screen={route.page}>
     <a href="#conteudo" className="skip-link" onClick={event => { event.preventDefault(); content.current?.focus(); }}>{t.shell.skip}</a>
     <header className="app-header">
       <div className="app-header-inner">
         <button type="button" className="brand" onClick={() => navigate('inicio')}>
-          <span className="brand-mark"><Dumbbell size={20} strokeWidth={1.8} aria-hidden="true" /></span><span>{brand.name}</span>
+          <img className="brand-mark" src={import.meta.env.BASE_URL + 'icons/mark.svg'} width={28} height={28} alt="" /><span>{brand.name}</span>
         </button>
         <nav aria-label={t.shell.navigation} className="app-navigation">
           <div className="nav-tabs">
@@ -215,7 +215,7 @@ export function App({ repository, demo = false }: { repository: TrackerRepositor
       </div>
     </header>
     <main ref={content} id="conteudo" tabIndex={-1} className="main-content">
-      {demo && !sessionOpen && <div className="demo-note">{t.shell.demo} <span>{t.shell.demoNote}</span></div>}
+      {demo && !sessionOpen && <div className="demo-note" title={t.shell.demoNote}>{t.shell.demo}<span className="sr-only">. {t.shell.demoNote}</span></div>}
       {!online && <div className="banner muted"><WifiOff size={16} />{t.shell.offline}</div>}
       {pwa.update && <div className="banner"><span>{t.settings.updateNotice}</span><button className="button secondary" disabled={status !== 'saved' || editDirty.current} onClick={pwa.applyUpdate}>{t.settings.update}</button></div>}
       {alert && <div className="banner error" role="alert">
@@ -226,7 +226,7 @@ export function App({ repository, demo = false }: { repository: TrackerRepositor
         </div>
       </div>}
       {notice && <div role="status" className="banner">{notice}</div>}
-      {page ?? (status === 'loading' && <p role="status" className="muted">{t.storage.loading}</p>)}
+      {page ?? (status === 'loading' && <p role="status" className="loading-state">{t.storage.loading}</p>)}
     </main>
   </div>;
 }
