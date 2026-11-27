@@ -13,6 +13,8 @@ O produto acompanha evolução física ao longo do tempo. A 1.0 reúne **treinam
 
 O treinamento segue usando os contratos atuais de domínio e persistência. Um novo módulo pode ganhar seu contrato e estado quando existir um fluxo real, compartilhando navegação, tokens visuais e componentes de base. Os dados terão origem, instante, unidade e ID estável. A ordem de evolução será revista com o uso real.
 
+A branch experimental 1.1.0-alpha.1 entrega diário alimentar, busca Open Food Facts, peso e medidas com IndexedDB. A evolução fotográfica e a leitura nativa de saúde permanecem no planejamento. [Módulos e critérios científicos](plataforma.md)
+
 ## Integrações avaliadas
 
 | Integração | Encaixe na PWA, backend ou nativo | Condições para adoção |

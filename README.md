@@ -1,8 +1,10 @@
 # Workout Tracker
 
-Aplicativo de treino em português brasileiro. Monte rotinas, registre séries e acompanhe sua progressão no dispositivo. A candidata `1.0.0-rc.4` reúne o módulo completo de treinamento.
+Aplicativo de treino em português brasileiro. Monte rotinas, registre séries e acompanhe sua progressão no dispositivo. A candidata de treino `1.0.0-rc.4` está disponível publicamente. Esta branch tem a plataforma experimental `1.1.0-alpha.1`, com nutrição e evolução corporal.
 
-## Avaliar a candidata
+## Avaliar a plataforma
+
+[Portfólio de treino por HTTPS](https://oliverzxr.github.io/workout-tracker/demo.html?state=active#/treino) · [Documentação da plataforma](docs/plataforma.md)
 
 A versão de treino é a base da apresentação. A demo possui rotinas e histórico de exemplo, com estado separado e descartável.
 
@@ -11,12 +13,12 @@ Use Node.js 24 LTS e npm. O build de produção permite avaliar instalação, us
 ```sh
 npm ci
 npm run build
-npm run preview -- --host 127.0.0.1 --port 4194
+npm run preview -- --host 127.0.0.1 --port 4200
 ```
 
-Abra [a aplicação](http://127.0.0.1:4194/). O armazenamento do navegador é vinculado ao endereço de acesso. Para trazer treinos de outro endereço, exporte um backup JSON lá e restaure em **Ajustes**.
+Abra [a aplicação](http://127.0.0.1:4200/). O armazenamento do navegador é vinculado ao endereço de acesso. Para trazer treinos de outro endereço, exporte um backup JSON lá e restaure em **Ajustes**.
 
-Para conferir a interface preenchida, execute `npm run build:demo` e `npm run preview -- --mode demo --host 127.0.0.1 --port 4195`. Abra [o catálogo de exemplo](http://127.0.0.1:4195/demo.html#/exercicios) ou [o treino ativo de exemplo](http://127.0.0.1:4195/demo.html?state=active#/treino). A demonstração usa o mesmo editor com um repositório em memória e repõe as amostras quando recarregada.
+Para conferir a interface preenchida, execute `npm run build:demo` e `npm run preview -- --mode demo --host 127.0.0.1 --port 4201`. Abra [Nutrição](http://127.0.0.1:4201/demo.html#/nutricao), [evolução corporal](http://127.0.0.1:4201/demo.html#/corpo), [visão geral](http://127.0.0.1:4201/demo.html#/inicio) ou [o treino ativo de exemplo](http://127.0.0.1:4201/demo.html?state=active#/treino). A demonstração usa o mesmo editor com um repositório em memória e repõe as amostras quando recarregada.
 
 ## Usar o aplicativo
 
@@ -47,6 +49,15 @@ O navegador guarda seus dados localmente. Exporte um backup antes de limpar os d
 | Falha de armazenamento | [Celular](docs/screenshots/rc/mobile-erro-armazenamento.png) | [Desktop](docs/screenshots/rc/desktop-erro-armazenamento.png) |
 
 [Início vazio](docs/screenshots/rc/mobile-inicio-vazio.png) · [Treino vazio](docs/screenshots/rc/mobile-treino-vazio.png)
+
+## Capturas da plataforma
+
+| Tela | Celular | Desktop |
+| --- | --- | --- |
+| Visão geral | [Celular](docs/screenshots/plataforma/mobile-visao-geral-metricas.png) | [Desktop](docs/screenshots/plataforma/desktop-visao-geral-metricas.png) |
+| Nutrição | [Celular](docs/screenshots/plataforma/mobile-nutricao.png) | [Desktop](docs/screenshots/plataforma/desktop-nutricao.png) |
+| Evolução corporal | [Celular](docs/screenshots/plataforma/mobile-corpo.png) | [Desktop](docs/screenshots/plataforma/desktop-corpo.png) |
+
 
 ## Documentação
 
