@@ -1,8 +1,10 @@
 # Workout Tracker
 
-Aplicativo de treino em português brasileiro. Monte rotinas, registre séries e acompanhe sua progressão no dispositivo. A candidata `1.0.0-rc.3` reúne o módulo completo de treinamento.
+Aplicativo de treino em português brasileiro. Monte rotinas, registre séries e acompanhe sua progressão no dispositivo. A candidata `1.0.0-rc.4` reúne o módulo completo de treinamento.
 
 ## Avaliar a candidata
+
+A versão de treino é a base da apresentação. A demo possui rotinas e histórico de exemplo, com estado separado e descartável.
 
 Use Node.js 24 LTS e npm. O build de produção permite avaliar instalação, uso offline, backup e exportação.
 

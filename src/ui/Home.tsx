@@ -58,7 +58,6 @@ export function Home({ data, start, resume, routines, create, history, detail }:
           <button type="button" className="button primary session-launch" onClick={draft ? resume : () => start()}>
             <Play size={16} fill="currentColor" aria-hidden="true" />{draft ? t.home.resume : t.home.start}
           </button>
-          {!draft && data.routines.length > 0 && <button type="button" className="button secondary" onClick={routines}>{t.home.openRoutine}</button>}
         </div>
       </section>
       <TrainingWeek now={now} workouts={weekWorkouts(data.workouts, now)} />

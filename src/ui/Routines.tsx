@@ -59,6 +59,7 @@ export function Routines({ routines, exercises, openNew, setOpenNew, save, remov
           <header className="routine-head">
             <div className="row-content"><h2>{routine.name}</h2>
               <small>{countLabel(routine.items.length, t.common.exercise, t.common.exercises)} · {countLabel(routine.items.reduce((total, item) => total + item.sets, 0), t.active.series, t.common.sets)}</small>
+              <p className="routine-examples">{routine.items.slice(0, 2).map(item => exercises.find(exercise => exercise.id === item.exerciseId)?.name).filter(Boolean).join(' · ')}</p>
             </div>
             <button className="icon-button" aria-label={t.common.edit + ' ' + routine.name} onClick={() => setEditing(routine)}><Pencil size={17} aria-hidden="true" /></button>
             <button className="icon-button" aria-label={t.routines.remove + ' ' + routine.name} onClick={() => { if (window.confirm(t.routines.confirm)) remove(routine); }}><Trash2 size={17} aria-hidden="true" /></button>

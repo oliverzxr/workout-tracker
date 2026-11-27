@@ -52,8 +52,8 @@
   .attendance li { display: grid; gap: .32rem; min-width: 0; color: var(--muted); font-size: .69rem; text-align: center; font-variant-numeric: tabular-nums; }
   .attendance li strong { color: var(--text); font-size: .74rem; font-weight: 550; }
   .attendance li[aria-current="date"] strong { color: var(--accent); }
-  .attendance-plot { display: flex; align-items: end; height: 30px; border-bottom: 1px solid var(--line); }
-  .attendance-plot span { width: 100%; border-radius: 3px 3px 0 0; background: var(--line); }
+  .attendance-plot { display: flex; align-items: end; justify-content: center; height: 34px; border-bottom: 1px solid var(--line); }
+  .attendance-plot span { width: clamp(12px, 60%, 42px); border-radius: 3px 3px 0 0; background: var(--line); }
   .attendance li[data-trained="true"] .attendance-plot span { background: var(--accent); }
   .attendance li[aria-current="date"] .attendance-plot { border-bottom-color: var(--accent-line); }
   .home-routines .section-head, .home-recent .section-head { border-bottom: 1px solid var(--line); }
@@ -77,6 +77,7 @@
   .routine-preview ol { margin: .15rem 0; padding-inline-start: 1.4rem; font-size: .8rem; }
   .routine-preview li { padding-block: .21rem; }
   .routine-preview li span { color: var(--text); }
+  .routine-examples { margin-top: .38rem; color: var(--quiet); line-height: 1.35; font-size: .74rem; }
   .routine-entry { display: flex; flex-wrap: wrap; align-items: center; gap: .24rem; padding-block: .4rem; border-bottom: 1px solid var(--line); }
   .routine-entry input { width: 3.6rem; padding-inline: .24rem; text-align: center; }
   .order { display: flex; }
