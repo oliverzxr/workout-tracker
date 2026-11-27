@@ -131,7 +131,7 @@ test('PWA serve os ícones e mantém IndexedDB, backup e CSV consistentes offlin
     await restored.goto(realApp + '#/ajustes');
     await expect(restored.getByRole('button', { name: 'Restaurar backup' })).toBeVisible();
     restored.once('dialog', dialog => dialog.accept());
-    await restored.locator('input[type=file]').setInputFiles({ name: 'backup.json', mimeType: 'application/json', buffer: backupBytes });
+    await restored.getByLabel('Restaurar backup', { exact: true }).setInputFiles({ name: 'backup.json', mimeType: 'application/json', buffer: backupBytes });
     await expect(restored.getByRole('status')).toHaveText('Backup restaurado.');
     await restored.getByRole('button', { name: 'Histórico', exact: true }).click();
     await restored.getByRole('button', { name: /Treino livre/ }).click();

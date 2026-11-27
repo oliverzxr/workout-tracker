@@ -6,5 +6,6 @@ import '@fontsource/inter/latin-700.css';
 import './styles.css';
 import { App } from './app/App';
 import { IndexedTrackerRepository } from './data/repository';
+import { LocalFitnessRepository } from './fitness/repository';
 
-createRoot(document.getElementById('root')!).render(<App repository={new IndexedTrackerRepository()} />);
+createRoot(document.getElementById('root')!).render(<App repository={new IndexedTrackerRepository()} fitnessRepository={new LocalFitnessRepository()} />);

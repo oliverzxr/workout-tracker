@@ -1,0 +1,65 @@
+@layer fitness {
+  .fitness-nav { display: flex; gap: .1rem; align-items: center; }
+  .fitness-nav .text-button { color: var(--muted); font-size: .75rem; padding-inline: .42rem; }
+  .fitness-nav .text-button[aria-current="page"] { color: var(--accent); background: var(--accent-surface); }
+  .app-navigation { display: flex; align-items: center; }
+  .fitness-day { display: flex; align-items: end; flex-wrap: wrap; gap: .45rem .7rem; margin-bottom: 1rem; }
+  .fitness-day label { min-width: min(100%, 11rem); }
+  .fitness-day label:has(input[type="date"]) { min-width: 0; flex: 0 1 10.8rem; }
+  .fitness-day label input, .fitness-day label select { min-height: var(--tap); }
+  .fitness-ledger { min-width: 0; margin-top: 1rem; border-top: 1px solid var(--line); padding-top: .8rem; }
+  .fitness-overview { grid-column: 1 / -1; }
+  .fitness-history summary { min-height: var(--tap); align-content: center; color: var(--muted); font-size: .8rem; cursor: pointer; }
+  .fitness-ledger > h2 { margin-bottom: .65rem; }
+  .fitness-ledger > p { font-size: .85rem; }
+  .fitness-ledger h3 { margin: .85rem 0 .2rem; color: var(--muted); font-size: .82rem; font-weight: 600; }
+  .fitness-fields { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: .6rem; }
+  .fitness-food-row { display: flex; align-items: center; gap: .18rem; padding-block: .35rem; border-bottom: 1px solid var(--line); }
+  .fitness-picker, .fitness-search { display: flex; align-items: end; flex-wrap: wrap; gap: .5rem; }
+  .fitness-picker label, .fitness-search label { flex: 1 1 9rem; min-width: 0; }
+  .fitness-search button { flex: none; }
+  .fitness-source { font-size: .75rem; }
+  .fitness-results, .overview-muscle-list { padding: 0; margin: 0; list-style: none; }
+  .fitness-results { border-block: 1px solid var(--line); max-height: 17rem; overflow: auto; }
+  .fitness-results li > p { padding-block: .55rem; }
+  .fitness-results small { display: block; color: var(--muted); }
+  .fitness-results .list-row { flex-wrap: wrap; gap: .25rem; }
+  .selected-food { color: var(--accent); padding-top: .5rem; border-top: 1px solid var(--line); }
+  .macro-totals, .body-metrics { display: grid; gap: .65rem; font-variant-numeric: tabular-nums; }
+  .macro-totals { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .body-metrics { grid-template-columns: repeat(auto-fit,minmax(min(100%,7rem),1fr)); }
+  .macro-totals > div, .body-metrics > div { display: grid; gap: .15rem; align-content: start; padding-block: .7rem; border-top: 1px solid var(--line); }
+  .macro-totals > div > span, .body-metrics span, .macro-totals small { color: var(--muted); font-size: .76rem; }
+  .macro-totals strong, .body-metrics strong { font-size: clamp(1.12rem,4vw,1.9rem); letter-spacing: -.04em; overflow-wrap: anywhere; }
+  .macro-totals progress { width: 100%; height: 4px; margin-top: .35rem; }
+  .fitness-overview, .fitness-body-layout { display: grid; min-width: 0; gap: .4rem 1.6rem; margin-top: 1.05rem; }
+  .overview-nutrition .macro-totals strong { font-size: clamp(1.12rem, 2vw, 1.5rem); }
+  .overview-muscle-list li { display: grid; grid-template-columns: 6.5rem 1fr 1.7rem; align-items: center; gap: .5rem; padding-block: .35rem; font-size: .79rem; border-bottom: 1px solid var(--line); }
+  .overview-muscle-list strong { text-align: end; }
+  .overview-bar { height: 4px; background: var(--line); }
+  .overview-bar i { display: block; height: 100%; background: var(--accent); }
+  .body-plot svg { display: block; max-width: 660px; width: 100%; }
+  .body-plot svg line { stroke: var(--line); stroke-width: .75px; }
+  .body-plot svg text { fill: var(--muted); font-size: 9px; }
+  .body-plot polyline { fill: none; stroke: var(--accent); stroke-width: 1.7px; }
+  .body-plot .average-line { stroke: var(--text); stroke-dasharray: 3 3; stroke-width: 1.35px; }
+  .body-plot circle { fill: var(--accent); }
+  .body-plot p { font-size: .8rem; }
+  .fitness-backup p { margin-block: .55rem; }
+  @media (max-width: 370px) {
+    .brand > span { position: absolute; clip-path: inset(50%); width: 1px; height: 1px; overflow: hidden; }
+    .fitness-food-row button { font-size: .72rem; }
+  }
+  @media (min-width: 620px) { .macro-totals { grid-template-columns: repeat(4,minmax(0,1fr)); } }
+  @media (min-width: 780px) and (max-width: 1000px) { .overview-nutrition .macro-totals { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+  @media (min-width: 780px) {
+    .app-header-inner { grid-template-columns: minmax(128px,1fr) minmax(0,3.7fr); }
+    .app-navigation { display: grid; grid-template-columns: minmax(0,1fr) auto auto; gap: .45rem; }
+    .nav-tabs { gap: .2rem; }
+    .nav-tabs button { padding-inline: .45rem; }
+    .fitness-overview { grid-row: 4; grid-template-columns: minmax(0,1.25fr) minmax(0,1fr); }
+    .overview-nutrition { grid-row: 1; grid-column: 1; }
+    .overview-plan { grid-row: 1; grid-column: 2; }
+    .fitness-body-layout { grid-template-columns: minmax(0,1.1fr) minmax(0,1fr); align-items: start; }
+  }
+}

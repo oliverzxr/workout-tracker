@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { ArrowUpRight, ChevronRight, Play, Plus } from 'lucide-react';
 import { countLabel, formatNumber, locale, longDate, shortDateRange, t } from '../app/pt-BR';
 import type { Routine, Snapshot, Workout } from '../domain/model';
@@ -6,7 +7,7 @@ import { Empty } from './primitives';
 
 type Props = {
   data: Snapshot; start: (routine?: Routine) => void; resume: () => void;
-  routines: () => void; create: () => void; history: () => void; detail: (workout: Workout) => void;
+  routines: () => void; create: () => void; history: () => void; detail: (workout: Workout) => void; overview?: ReactNode;
 };
 
 const weekday = new Intl.DateTimeFormat(locale, { weekday: 'short' });
@@ -43,7 +44,7 @@ function TrainingWeek({ now, workouts }: { now: Date; workouts: Workout[] }) {
   </section>;
 }
 
-export function Home({ data, start, resume, routines, create, history, detail }: Props) {
+export function Home({ data, start, resume, routines, create, history, detail, overview }: Props) {
   const now = new Date();
   const recent = [...data.workouts].sort((a, b) => b.startedAt.localeCompare(a.startedAt))[0];
   const draft = data.draft;
@@ -61,6 +62,7 @@ export function Home({ data, start, resume, routines, create, history, detail }:
         </div>
       </section>
       <TrainingWeek now={now} workouts={weekWorkouts(data.workouts, now)} />
+      {overview}
       <section className="section home-routines">
         <div className="section-head"><h2>{t.home.quick}</h2><button type="button" className="text-button" onClick={routines}>{t.home.allRoutines}<ChevronRight size={15} aria-hidden="true" /></button></div>
         {data.routines.length ? <div className="list home-list">{data.routines.slice(0, 3).map(routine => <div className="list-row" key={routine.id}>

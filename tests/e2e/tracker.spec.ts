@@ -179,10 +179,10 @@ test('gerencia catálogo e restaura um backup em um contexto novo', async ({ pag
   try {
     await target.goto('/');
     await go(target, 'Ajustes');
-    await target.locator('input[type=file]').setInputFiles({ name: 'bad.json', mimeType: 'application/json', buffer: Buffer.from('{}') });
+    await target.getByLabel('Restaurar backup', { exact: true }).setInputFiles({ name: 'bad.json', mimeType: 'application/json', buffer: Buffer.from('{}') });
     await expect(target.getByRole('alert')).toContainText('Seus dados foram preservados.');
     target.once('dialog', prompt => prompt.accept());
-    await target.locator('input[type=file]').setInputFiles(file);
+    await target.getByLabel('Restaurar backup', { exact: true }).setInputFiles(file);
     await expect(target.getByRole('status')).toHaveText('Backup restaurado.');
     await go(target, 'Rotinas');
     await target.getByRole('button', { name: 'Gerenciar exercícios' }).click();

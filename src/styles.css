@@ -1,4 +1,4 @@
-@layer tokens, reset, base, components, screens, catalog;
+@layer tokens, reset, base, components, screens, catalog, fitness;
 @import "./tokens.css";
 @import "./screens.css";
 @import "./workout.css";

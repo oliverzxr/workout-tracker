@@ -16,6 +16,13 @@ import { Routines } from '../ui/Routines';
 import { Settings } from '../ui/Settings';
 import { WorkoutEditor } from '../ui/WorkoutEditor';
 import { Empty } from '../ui/primitives';
+import { BodyScreen } from '../fitness/BodyScreen';
+import { NutritionScreen } from '../fitness/NutritionScreen';
+import { Overview } from '../fitness/Overview';
+import { BackupControls } from '../fitness/BackupControls';
+import type { FitnessRepository } from '../fitness/repository';
+import { fitnessBackup } from '../fitness/model';
+import '../fitness/styles.css';
 
 const ExerciseDetail = lazy(() => import('../ui/ExerciseDetail').then(module => ({ default: module.ExerciseDetail })));
 
@@ -27,9 +34,9 @@ const tabs = [
   ['ajustes', t.nav.settings, Gear],
 ] as const;
 
-type Page = typeof tabs[number][0] | 'exercicios' | 'exercicio' | 'treino' | 'detalhes' | 'editar';
+type Page = typeof tabs[number][0] | 'exercicios' | 'exercicio' | 'treino' | 'detalhes' | 'editar' | 'nutricao' | 'corpo';
 type Route = { page: Page; id: string };
-const pages: Page[] = [...tabs.map(([page]) => page), 'exercicios', 'exercicio', 'treino', 'detalhes', 'editar'];
+const pages: Page[] = [...tabs.map(([page]) => page), 'exercicios', 'exercicio', 'treino', 'detalhes', 'editar', 'nutricao', 'corpo'];
 
 function readRoute(): Route {
   const [page, segment = ''] = window.location.hash.replace(/^#\/?/, '').split('/');
@@ -57,8 +64,9 @@ function useConnectivity() {
   return online;
 }
 
-export function App({ repository, demo = false }: { repository: TrackerRepository; demo?: boolean }) {
+export function App({ repository, fitnessRepository, demo = false }: { repository: TrackerRepository; fitnessRepository: FitnessRepository; demo?: boolean }) {
   const { data, update, status, reload, retry } = useTracker(repository);
+  const fitness = useTracker(fitnessRepository);
   const pwa = usePwa();
   const online = useConnectivity();
   const [route, setRoute] = useState(readRoute);
@@ -73,7 +81,7 @@ export function App({ repository, demo = false }: { repository: TrackerRepositor
 
   useEffect(() => {
     const beforeUnload = (event: BeforeUnloadEvent) => {
-      if (editDirty.current || status === 'saving' || (data && (status === 'error' || status === 'conflict'))) {
+      if (editDirty.current || status === 'saving' || fitness.status === 'saving' || (fitness.data && (fitness.status === 'error' || fitness.status === 'conflict')) || (data && (status === 'error' || status === 'conflict'))) {
         event.preventDefault();
       }
     };
@@ -93,7 +101,7 @@ export function App({ repository, demo = false }: { repository: TrackerRepositor
     window.addEventListener('hashchange', hashChange);
     window.addEventListener('beforeunload', beforeUnload);
     return () => { window.removeEventListener('hashchange', hashChange); window.removeEventListener('beforeunload', beforeUnload); };
-  }, [route, status, data]);
+  }, [route, status, data, fitness.status, fitness.data]);
 
   useEffect(() => {
     const next = routeHash({ page: route.page, id: route.id });
@@ -157,8 +165,9 @@ export function App({ repository, demo = false }: { repository: TrackerRepositor
     if (success) { editDirty.current = false; showWorkout(workout); }
   }
 
+  const fitnessPage = route.page === 'nutricao' || route.page === 'corpo';
   let page;
-  if (data) {
+  if (data && !fitnessPage) {
     if (route.page === 'rotinas') page = <Routines routines={data.routines} exercises={data.exercises} openNew={newRoutine}
       setOpenNew={setNewRoutine} save={saveRoutine} remove={routine => { void update(current => ({ ...current, routines: current.routines.filter(item => item.id !== routine.id) })); }}
       start={start} catalog={() => navigate('exercicios')} />;
@@ -192,8 +201,17 @@ export function App({ repository, demo = false }: { repository: TrackerRepositor
       }} saveStatus={demo ? t.shell.demo : editingHistory || alert || status === 'loading' ? '' : t.storage[status]} error={editorError} />;
     else if (mainTab === 'historico') page = <History workouts={data.workouts} detail={showWorkout} />;
     else page = <Home data={data} start={start} resume={() => navigate('treino')} routines={() => navigate('rotinas')}
-      create={showNewRoutine} history={() => navigate('historico')} detail={showWorkout} />;
+      create={showNewRoutine} history={() => navigate('historico')} detail={showWorkout}
+      overview={fitness.data && <Overview training={data} data={fitness.data} save={fitness.update} start={start}
+        showNutrition={() => navigate('nutricao')} showBody={() => navigate('corpo')} showProgress={() => navigate('progresso')} />} />;
   }
+  if (fitnessPage) {
+    if (fitness.data) page = route.page === 'nutricao' ? <NutritionScreen data={fitness.data} save={fitness.update} />
+      : <BodyScreen data={fitness.data} save={fitness.update} />;
+    else if (fitness.status === 'loading') page = <p className="loading-state" role="status">Carregando seus registros…</p>;
+  }
+  const fitnessAlert = (fitnessPage || route.page === 'ajustes' || route.page === 'inicio')
+    && (fitness.status === 'error' || fitness.status === 'conflict');
 
   return <div className="app-shell" data-session={sessionOpen ? 'open' : undefined} data-screen={route.page}>
     <a href="#conteudo" className="skip-link" onClick={event => { event.preventDefault(); content.current?.focus(); }}>{t.shell.skip}</a>
@@ -208,6 +226,10 @@ export function App({ repository, demo = false }: { repository: TrackerRepositor
               <Icon size={21} strokeWidth={1.7} aria-hidden="true" /><span>{label}</span>
             </button>)}
           </div>
+          <div className="fitness-nav">
+            <button type="button" className="text-button" aria-current={route.page === 'nutricao' ? 'page' : undefined} onClick={() => navigate('nutricao')}>Nutrição</button>
+            <button type="button" className="text-button" aria-current={route.page === 'corpo' ? 'page' : undefined} onClick={() => navigate('corpo')}>Corpo</button>
+          </div>
           <button type="button" className="icon-button nav-settings" aria-label={t.nav.settings} aria-current={mainTab === 'ajustes' ? 'page' : undefined} title={t.nav.settings} onClick={() => navigate('ajustes')}>
             <Gear size={21} strokeWidth={1.7} aria-hidden="true" />
           </button>
@@ -217,7 +239,7 @@ export function App({ repository, demo = false }: { repository: TrackerRepositor
     <main ref={content} id="conteudo" tabIndex={-1} className="main-content">
       {demo && !sessionOpen && <div className="demo-note" title={t.shell.demoNote}>{t.shell.demo}<span className="sr-only">. {t.shell.demoNote}</span></div>}
       {!online && <div className="banner muted"><WifiOff size={16} />{t.shell.offline}</div>}
-      {pwa.update && <div className="banner"><span>{t.settings.updateNotice}</span><button className="button secondary" disabled={status !== 'saved' || editDirty.current} onClick={pwa.applyUpdate}>{t.settings.update}</button></div>}
+      {pwa.update && <div className="banner"><span>{t.settings.updateNotice}</span><button className="button secondary" disabled={status !== 'saved' || fitness.status !== 'saved' || editDirty.current} onClick={pwa.applyUpdate}>{t.settings.update}</button></div>}
       {alert && <div className="banner error" role="alert">
         <span>{t.storage[status]}</span>
         <div className="split">
@@ -226,7 +248,13 @@ export function App({ repository, demo = false }: { repository: TrackerRepositor
         </div>
       </div>}
       {notice && <div role="status" className="banner">{notice}</div>}
+      {fitnessAlert && <div className="banner error" role="alert">
+        <span>{fitness.status === 'conflict' ? 'Outra janela alterou os dados de nutrição e corpo.' : 'O navegador não conseguiu acessar nutrição e corpo.'}</span>
+        {fitness.data && <button className="button secondary" onClick={() => download(fitnessBackup(fitness.data!), 'workout-tracker-fitness-recuperacao.json', 'application/json')}>Baixar cópia para recuperação</button>}
+        <button className="button secondary" onClick={() => { void (fitness.data && fitness.status !== 'conflict' ? fitness.retry() : fitness.reload()); }}>Tentar novamente</button>
+      </div>}
       {page ?? (status === 'loading' && <p role="status" className="loading-state">{t.storage.loading}</p>)}
+      {route.page === 'ajustes' && fitness.data && !demo && <BackupControls data={fitness.data} save={fitness.update} />}
     </main>
   </div>;
 }
