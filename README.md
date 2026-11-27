@@ -2,6 +2,13 @@
 
 Aplicativo de treino em português brasileiro. Monte rotinas, registre séries e acompanhe sua progressão no dispositivo. A candidata `1.0.0-rc.4` reúne o módulo completo de treinamento.
 
+[**Abrir demonstração de treino**](https://oliverzxr.github.io/workout-tracker/demo.html?state=active#/treino) · [Usar a PWA](https://oliverzxr.github.io/workout-tracker/) · [Ler a arquitetura](docs/arquitetura.md)
+
+![Treino ativo com dados de exemplo](docs/screenshots/rc/desktop-treino-ativo.png)
+
+A demonstração tem rotinas, histórico e um treino em andamento. Depois de testar uma série, você pode recarregar para voltar aos exemplos. O aplicativo pessoal guarda registros neste navegador e funciona offline após o primeiro carregamento.
+
+
 ## Avaliar a candidata
 
 A versão de treino é a base da apresentação. A demo possui rotinas e histórico de exemplo, com estado separado e descartável.
