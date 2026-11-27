@@ -1,18 +1,20 @@
 # Sistema visual
 
-O fundo é preto absoluto, com separação entre superfícies por luminância e divisórias finas. O destaque turquesa é reservado a ações principais, seleção, foco e confirmações de treino. A tipografia Inter é servida localmente e usa algarismos tabulares em campos, cronômetros e métricas.
+O fundo preto absoluto sustenta todos os destinos. Superfícies aparecem para campos, menus e comandos que precisam ser reconhecidos rapidamente. As listas usam alinhamento, tipografia e divisórias. Inter é servida localmente, com algarismos tabulares em cargas, repetições, cronômetro e totais.
 
-| Papel | Valor de referência | Aplicação |
+| Papel | Valor | Aplicação |
 | --- | --- | --- |
-| Fundo | `#000000` | Tela e barras globais |
-| Superfície | `#101112` | Exercícios, formulários e sessões |
-| Campo | `#171819` | Entradas e ações secundárias |
-| Texto | `#f3f5f5` | Leitura e valores |
-| Texto secundário | `#a6adad` | Unidades, metadados e instruções |
-| Destaque | `#76e3cb` | Próxima série, ação principal e foco |
+| Fundo | `#000000` | Tela |
+| Superfície | `#101416` | Contextos de ação, seleção e formulários |
+| Campo | `#171c1e` | Entradas e comandos secundários |
+| Texto | `#edf2f1` | Leitura principal |
+| Texto secundário | `#a8b3b3` | Metadados, unidades e instruções |
+| Destaque | `#8ce2d0` | Ação principal, foco, confirmação e séries na semana |
 
-Os valores ficam em `src/tokens.css`. Botões, campos, modais, estados vazios e linhas de lista compartilham estados, margens e contornos em `src/styles.css`. As telas reutilizam `Title`, `Dialog`, `Empty` e `Order`. O shell organiza quatro destinos de treinamento, com Ajustes no cabeçalho. A entrada de futuros módulos poderá reutilizar os mesmos componentes com navegação contextual.
+`src/tokens.css` define os papéis. Bordas e preenchimentos indicam função. A lista de histórico usa uma coluna de data e outra de métricas, a área de rotinas separa ação e organização, e o progresso combina resumo do período, série histórica e distribuição muscular. Cada destino mantém a mesma anatomia de títulos, listas e ações, com o layout definido pelo conteúdo.
 
-No treino ativo, a ordem de leitura é nome, progresso da sessão, exercícios, valores anteriores e ações de descanso. O dock concentra as ações que precisam ficar acessíveis perto do polegar. O menor alvo dos controles principais mede pelo menos 44 pixels CSS nas verificações. O tipo da série e o estado de conclusão contam com texto acessível e forma visual. O foco aparece com contorno e a interface respeita movimento reduzido. [Referência de tamanho de alvo](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)
+No celular, quatro destinos ficam na barra inferior. Ajustes permanece no cabeçalho. Em telas largas, navegação e marca compartilham uma linha, com marcação inferior do destino ativo. A mesma estrutura poderá receber navegação contextual para novos módulos quando existirem rotas reais.
 
-A referência do Hevy orientou a proximidade entre série atual, série anterior e descanso por exercício. Os componentes, a navegação e a linguagem visual do Workout Tracker foram definidos para este produto. [Registro de treinos no Hevy](https://www.hevyapp.com/features/track-workouts/) · [Cronômetro do Hevy](https://www.hevyapp.com/features/workout-rest-timer/)
+No treino, o contador de séries e a sequência precedem a tabela. A primeira confirmação pendente recebe o destaque principal. Carga anterior e cópia permanecem na linha, abaixo dos campos no celular. Controles de sessão ficam no rodapé móvel e em uma coluna lateral no desktop. O foco tem contorno visível e animações de estado respeitam movimento reduzido. [Tamanho de alvo, WCAG 2.2](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)
+
+[Avaliação das referências e iterações](design-rc3.md)
