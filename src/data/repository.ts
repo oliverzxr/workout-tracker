@@ -6,10 +6,12 @@ import type { Snapshot } from '../domain/model';
 
 export type StoredTracker = { revision: number; data: Snapshot };
 
-export interface TrackerRepository {
-  read(): Promise<StoredTracker>;
-  save(data: Snapshot, expectedRevision: number): Promise<number>;
+export interface SnapshotRepository<T> {
+  read(): Promise<{ data: T; revision: number }>;
+  save(data: T, expectedRevision: number): Promise<number>;
 }
+
+export type TrackerRepository = SnapshotRepository<Snapshot>;
 
 export class WriteConflict extends Error {}
 

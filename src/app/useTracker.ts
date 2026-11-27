@@ -1,12 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { WriteConflict } from '../data/repository';
-import type { TrackerRepository } from '../data/repository';
-import type { Snapshot } from '../domain/model';
+import type { SnapshotRepository } from '../data/repository';
 
-export function useTracker(repository: TrackerRepository) {
-  const [data, setData] = useState<Snapshot | null>(null);
+export function useTracker<T extends object>(repository: SnapshotRepository<T>) {
+  const [data, setData] = useState<T | null>(null);
   const [status, setStatus] = useState<'loading' | 'saved' | 'saving' | 'error' | 'conflict'>('loading');
-  const current = useRef<Snapshot | null>(null);
+  const current = useRef<T | null>(null);
   const revision = useRef(0);
   const pending = useRef<Promise<boolean> | null>(null);
   const blocked = useRef(false);
@@ -34,7 +33,7 @@ export function useTracker(repository: TrackerRepository) {
     setStatus('saving');
     const task = (async () => {
       try {
-        let snapshot: Snapshot | null;
+        let snapshot: T | null;
         do {
           snapshot = current.current;
           if (!snapshot) return false;
@@ -56,7 +55,7 @@ export function useTracker(repository: TrackerRepository) {
     }
   }, [repository]);
 
-  const update = useCallback((change: (value: Snapshot) => Snapshot) => {
+  const update = useCallback((change: (value: T) => T) => {
     if (!current.current || blocked.current) return Promise.resolve(false);
     const changed = change(current.current);
     current.current = changed;

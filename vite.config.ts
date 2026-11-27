@@ -2,12 +2,14 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 import { brand } from './src/app/pt-BR';
+import { openFoodFactsProxy } from './server/openFoodFacts';
 
 export default defineConfig(({ mode }) => ({
   base: process.env.VITE_BASE_PATH || './',
   build: mode === 'demo' ? { outDir: 'dist-demo', rollupOptions: { input: 'demo.html' } } : undefined,
   plugins: [
     react(),
+    openFoodFactsProxy(),
     VitePWA({
       disable: mode === 'demo',
       registerType: 'prompt',
