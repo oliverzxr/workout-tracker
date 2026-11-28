@@ -1,13 +1,18 @@
 # Workout Tracker
 
-Aplicativo de treino em português brasileiro. Monte rotinas, registre séries e acompanhe sua progressão no dispositivo. A candidata `1.0.0-rc.4` reúne o módulo completo de treinamento.
+Aplicação de musculação em português brasileiro com React e TypeScript. Planeje rotinas, registre séries e acompanhe sua progressão com persistência local e uso offline.
 
-[**Abrir demonstração de treino**](https://oliverzxr.github.io/workout-tracker/demo.html?state=active#/treino) · [Usar a PWA](https://oliverzxr.github.io/workout-tracker/) · [Ler a arquitetura](docs/arquitetura.md)
+[**Experimentar o treino demonstrativo**](https://oliverzxr.github.io/workout-tracker/demo.html?state=active#/treino) · [Abrir a PWA](https://oliverzxr.github.io/workout-tracker/) · [Arquitetura](docs/arquitetura.md) · [Testes](docs/validacao-rc.md)
 
-![Treino ativo com dados de exemplo](docs/screenshots/rc/desktop-treino-ativo.png)
+![Treino ativo em desktop](docs/screenshots/rc/desktop-treino-ativo.png)
 
-A demonstração tem rotinas, histórico e um treino em andamento. Depois de testar uma série, você pode recarregar para voltar aos exemplos. O aplicativo pessoal guarda registros neste navegador e funciona offline após o primeiro carregamento.
+**Treinamento implementado** inclui rotinas, 76 exercícios, séries válidas e de aquecimento, carga, repetições, RIR, descanso, histórico editável, recordes, gráficos, backup JSON e exportação CSV. A demo usa dados em memória e reinicia ao recarregar.
 
+**Experimental** em [outra branch](https://github.com/oliverzxr/workout-tracker/tree/codex/fitness-platform), nutrição e medidas corporais usam IndexedDB. A busca Open Food Facts exige um adaptador de servidor. **Planejado** inclui autenticação, sincronização e integrações de saúde.
+
+React, TypeScript estrito e Vite compõem a interface. O domínio e o contrato de persistência são separados da UI. O IndexedDB guarda uma revisão junto dos dados para detectar conflitos entre abas. O service worker fornece acesso offline após o primeiro carregamento. A CI executa lint, testes de domínio, build e fluxos em Chromium e WebKit. [CI da candidata](https://github.com/oliverzxr/workout-tracker/actions/runs/46026400928)
+
+Os dados ficam no navegador, vinculados ao endereço e perfil. Exporte backups antes de trocar de dispositivo ou limpar os dados. A instalação em iPhone físico ainda precisa ser verificada.
 
 ## Avaliar a candidata
 
@@ -70,3 +75,6 @@ O navegador guarda seus dados localmente. Exporte um backup antes de limpar os d
 - [Viabilidade de importar CSV do Hevy](docs/importacao-hevy.md)
 - [Licenças de terceiros distribuídas com o app](public/THIRD-PARTY-NOTICES.txt)
 - [Projeto original de aprendizado](https://github.com/oliverzxr/workout-tracker/tree/learning)
+
+- [Guia técnico para entrevistas](docs/guia-estudo.md)
+- [Descrições para candidatura e consolidação](docs/candidatura.md)
